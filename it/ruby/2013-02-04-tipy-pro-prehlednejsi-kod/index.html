@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<title>Tipy pro přehlednější kód v Ruby</title>
+<link href="/a/cs/app.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/a/script/app.js" type="text/javascript"></script>
+</head>
+
+<body class='it it_ruby it_ruby_2013-02-04-tipy-pro-prehlednejsi-kod it_ruby_2013-02-04-tipy-pro-prehlednejsi-kod_index one-sidebar-right'>
+<div id='container'>
+<header id='header'>
+<div id='noc'></div>
+<div class='content'>
+<h1 id='sitename'>
+<a href='/'>Fanda Internetu</a>
+</h1>
+<nav id='primary'>
+<ul class='links primary-links tac'>
+<li><a href="/audio/">Audio</a></li>
+<li><a href="/internet/">Internet</a></li>
+<li>
+<a href="/it/">IT</a>
+<ul class='links primary-inner'>
+<li><a href="/it/cpp">C++</a></li>
+<li><a href="/it/drupal">Drupal</a></li>
+<li><a href="/it/iphone">iPhone</a></li>
+<li><a href="/it/linux">Linux</a></li>
+<li><a href="/it/perl">Perl</a></li>
+<li><a href="/it/python">Python</a></li>
+<li><a href="/it/ruby">Ruby</a></li>
+<li><a href="/it/ostatni">Ostatni</a></li>
+</ul>
+</li>
+<li><a href="/knihy">Knihy</a></li>
+<li><a href="/matematika/">Matematika</a></li>
+<li><a href="/odkazy/">Odkazy</a></li>
+<li>
+<a href="/ostatni/">Ostatní</a>
+<ul class='links primary-inner'>
+<li><a href="/ostatni/pyramidy">Pyramidy</a></li>
+</ul>
+</li>
+<li>
+<a href="/seberozvoj/">Seberozvoj</a>
+<ul class='links primary-inner'>
+<li><a href="/seberozvoj/joga">Jóga</a></li>
+</ul>
+</li>
+<li><a href="/video/">Video</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<div class='content tac' id='featured'>
+<cite>
+Od audio, až po video.
+</cite>
+</div>
+
+<section class='container row wrapper' id='center'>
+<section class='content threequarter' id='content'>
+<div class='inn'><article style='display: block'>
+<header>
+<hgroup>
+<h1>Tipy pro přehlednější kód v Ruby</h1>
+<h1 class='subheader'>
+<time> 4.  2. 2013</time>
+</h1>
+</hgroup>
+
+</header>
+<p>Jazyk Ruby dovoluje zapisovat víceméně ekvivalentní kód různými způsoby. Některé zápisy se dobře čtou, jiné jsou více efektivní a dají se vymyslet takové, co se dobře čtou a jsou i velmi efektivní (ať už paměťově nebo výkonnostně). Nebudu se pouštět do hlubokých rozborů následujících útržků kódu, pouze je nabízím jako inspiraci.</p>
+
+<h2>Podmíněná návratová hodnota</h2>
+
+<p>Jako první uvádím variace na ternární operátor pro podmínku, který zná téměř každý, kdo programuje v jazycích C/C++, php, JavaScript a v mnoha dalších. Jeho použití je v Ruby následující:</p>
+<pre class="highlight ruby"><span class="k">def </span><span class="nf">jedna!</span>
+    <span class="kp">true</span> <span class="p">?</span> <span class="ss">:jedna</span> <span class="p">:</span> <span class="s1">&#39;dvě&#39;</span> <span class="c1"># =&gt; :jedna</span>
+<span class="k">end</span>
+</pre>
+<p>Dle mého názoru se hodí spíše pro podmíněné přiřazení, než k podmínce o návratové hodnotě. Někteří programátoři jej nepoužívají vůbec. Sám musím uznat, že následující zápis je mnohem sebevysvětlující.</p>
+<pre class="highlight ruby"><span class="k">def </span><span class="nf">jedna_nebo_2</span><span class="p">(</span><span class="n">kolik</span><span class="p">)</span>
+    <span class="k">return</span> <span class="ss">:jedna</span> <span class="k">if</span> <span class="n">kolik</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="s1">&#39;dvě&#39;</span>
+<span class="k">end</span>
+</pre>
+<p>Jak zapsat tuto funkci pouze na jeden řádek? Hezké je to s použitím operátoru <em>or</em> takto:</p>
+<pre class="highlight ruby"><span class="k">def </span><span class="nf">jedna_nebo_2</span><span class="p">(</span><span class="n">kolik</span><span class="p">)</span>
+    <span class="p">(</span><span class="ss">:jedna</span> <span class="k">if</span> <span class="n">kolik</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="n">or</span> <span class="s1">&#39;dvě&#39;</span>
+<span class="k">end</span>
+</pre>
+<p>Tu nejdelší variantu na pět řádků s <em>if</em>, <em>else</em> a <em>end</em> zde uvádět nechci a myslím, že ani nemusím.</p>
+
+<h2>Testování hodnot v objektu</h2>
+
+<p>U podmínek ještě chvíli zůstaňme. Občas má program vykonat nějakou činnost, pokud je ekvivaletní jedné z několika různých hodnot.</p>
+<pre class="highlight ruby"><span class="k">if</span> <span class="n">kolik</span> <span class="o">==</span> <span class="ss">:jedna</span> <span class="n">or</span> <span class="n">kolik</span> <span class="o">==</span> <span class="s1">&#39;dvě&#39;</span> <span class="n">or</span> <span class="n">kolik</span> <span class="o">==</span> <span class="s1">&#39;tři&#39;</span> <span class="n">or</span> <span class="n">kolik</span> <span class="o">==</span> <span class="mi">4</span> <span class="c1"># případně dále</span>
+</pre>
+<p>Taková podmínka může být i na několik řádků a přehledná rozhodně není. Mnohem lepší se mi v takových případech jeví dát hodnoty do pole a zavolat jeho metodu include?.</p>
+<pre class="highlight ruby"><span class="k">if</span> <span class="o">[</span><span class="ss">:jedna</span><span class="p">,</span> <span class="s1">&#39;dvě&#39;</span><span class="p">,</span> <span class="s1">&#39;tři&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="o">]</span><span class="nf">.include?</span><span class="p">(</span><span class="n">kolik</span><span class="p">)</span>
+</pre>
+<p>Kdyby se jednalo jen o slova (řetězce), mohl by se zápis psát lépe použitím %w().</p>
+<pre class="highlight ruby"><span class="k">if</span> <span class="sx">%w(jedna dvě tři čtyři)</span><span class="nf">.include?</span><span class="p">(</span><span class="n">kolik</span><span class="p">)</span>
+</pre>
+<h2>Mnohonásobné přiřazení hodnot z Hash</h2>
+
+<p>Představte si, že máte následující zanořený Hash a potřebujete z něj bezpečně získat hodnoty <em>name</em> a <em>nick</em>. Uvažme, že Hash jako celek nikdy nebude nil, ale vnořený Hash info být prázdný může.</p>
+<pre class="highlight ruby"><span class="n">user</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;xxx&#39;</span><span class="p">,</span>
+    <span class="ss">info: </span><span class="p">{</span>
+        <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;pan Poctivý&#39;</span><span class="p">,</span>
+        <span class="ss">nick: </span><span class="s1">&#39;pp&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+<p>Ne zrovna hloupá, ale určitě pracná (pokud by hodnot bylo víc jak dvě) je tato:</p>
+<pre class="highlight ruby"><span class="nb">name</span> <span class="o">=</span> <span class="n">user</span><span class="o">[</span><span class="ss">:info</span><span class="o">]</span> <span class="n">and</span> <span class="n">user</span><span class="o">[</span><span class="ss">:info</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span>
+<span class="n">nick</span> <span class="o">=</span> <span class="n">user</span><span class="o">[</span><span class="ss">:info</span><span class="o">]</span> <span class="n">and</span> <span class="n">user</span><span class="o">[</span><span class="ss">:info</span><span class="o">][</span><span class="ss">:nick</span><span class="o">]</span>
+</pre>
+<p>Kontrola user[:info] se dá samozřejmě dát do podmínky a pro více jak dvě přiřazované hodnoty je to určitě záhodno.</p>
+<pre class="highlight ruby"><span class="k">if</span> <span class="n">info</span> <span class="o">=</span> <span class="n">user</span><span class="o">[</span><span class="ss">:info</span><span class="o">]</span>
+  <span class="nb">name</span> <span class="o">=</span> <span class="n">info</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>
+  <span class="n">nick</span> <span class="o">=</span> <span class="n">info</span><span class="o">[</span><span class="ss">:nick</span><span class="o">]</span>
+<span class="k">end</span>
+</pre>
+<p>Přiřazení do proměnné info v podmínce, která kontroluje přítomnost zanořené struktury, zjednoduší zápis uvnitř bloku. Tento kus kódu v Ruby se ovšem dá zapsat na jednom jediném řádku. Objekt typu Hash má zajímavou metodu <a href="http://www.ruby-doc.org/core-1.9.3/Hash.html#method-i-values_at">values_at</a>, která vrací hodnoty, jejichž klíče jsou předány jako parametry. I s podmínkou se použije třeba takto:</p>
+<pre class="highlight ruby"><span class="nb">name</span><span class="p">,</span> <span class="n">nick</span> <span class="o">=</span> <span class="n">user</span><span class="o">[</span><span class="ss">:info</span><span class="o">]</span><span class="nf">.values_at</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:nick</span><span class="p">)</span> <span class="k">if</span> <span class="n">user</span><span class="o">[</span><span class="ss">:info</span><span class="o">]</span>
+</pre>
+<p>Asi by to stále nebylo to pravé ořechové, pokud by byly potřeba víc než dvě hodnoty, ale je to hezké a takové &ldquo;Ruby&rdquo;.</p>
+
+<footer></footer>
+</article>
+</div>
+</section>
+<aside class='wrapper quarter' id='sidebar-right'>
+<div class='inn'></div>
+</aside>
+</section>
+<footer class='row wrapper' id='footer'>
+<section class='half taj'>
+<h3>O stránkách a o mně</h3>
+Internet je podle mě médium, které bude vždy o kus předemnou. Ovšem vždycky na tom budou někteří ještě hůř než já a těm jsou stránky určeny především.
+<br>
+Stránky jsou na Internetu od roku 2008. Zažily hodně změn a byly častokrát opuštěny. Zásadní změna přišla v roce 2014, kdy jsem provedl redesign a sloučil všechny tématické větve do hlavní stránky.
+<br>
+Já jsem fanda, moravský <a href="http://programatornavolnenoze.cz">programátor na volné noze</a>.
+</section>
+<section class='quarter tac'>
+<br>
+Licence na obsah:
+<img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" />
+<br>
+<a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
+<br>
+<br>
+<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
+</section>
+<section class='quarter'>
+pra
+</section>
+</footer>
+
+</div>
+</body>
+</html>
+

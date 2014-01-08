@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<title>Přesun MySQL databáze přímo pomocí souborů na disku</title>
+<link href="/a/cs/app.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/a/script/app.js" type="text/javascript"></script>
+</head>
+
+<body class='it it_linux it_linux_2009-09-26-presun-mysql-databaze-primo-pomoci-souboru-na-disku it_linux_2009-09-26-presun-mysql-databaze-primo-pomoci-souboru-na-disku_index one-sidebar-right'>
+<div id='container'>
+<header id='header'>
+<div id='noc'></div>
+<div class='content'>
+<h1 id='sitename'>
+<a href='/'>Fanda Internetu</a>
+</h1>
+<nav id='primary'>
+<ul class='links primary-links tac'>
+<li><a href="/audio/">Audio</a></li>
+<li><a href="/internet/">Internet</a></li>
+<li>
+<a href="/it/">IT</a>
+<ul class='links primary-inner'>
+<li><a href="/it/cpp">C++</a></li>
+<li><a href="/it/drupal">Drupal</a></li>
+<li><a href="/it/iphone">iPhone</a></li>
+<li><a href="/it/linux">Linux</a></li>
+<li><a href="/it/perl">Perl</a></li>
+<li><a href="/it/python">Python</a></li>
+<li><a href="/it/ruby">Ruby</a></li>
+<li><a href="/it/ostatni">Ostatni</a></li>
+</ul>
+</li>
+<li><a href="/knihy">Knihy</a></li>
+<li><a href="/matematika/">Matematika</a></li>
+<li><a href="/odkazy/">Odkazy</a></li>
+<li>
+<a href="/ostatni/">Ostatní</a>
+<ul class='links primary-inner'>
+<li><a href="/ostatni/pyramidy">Pyramidy</a></li>
+</ul>
+</li>
+<li>
+<a href="/seberozvoj/">Seberozvoj</a>
+<ul class='links primary-inner'>
+<li><a href="/seberozvoj/joga">Jóga</a></li>
+</ul>
+</li>
+<li><a href="/video/">Video</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<div class='content tac' id='featured'>
+<cite>
+Od audio, až po video.
+</cite>
+</div>
+
+<section class='container row wrapper' id='center'>
+<section class='content threequarter' id='content'>
+<div class='inn'><article style='display: block'>
+<header>
+<hgroup>
+<h1>Přesun MySQL databáze přímo pomocí souborů na disku</h1>
+<h1 class='subheader'>
+<time>26.  9. 2009</time>
+</h1>
+</hgroup>
+
+</header>
+<p>Po několika letech používání Debianu jsem se rozhodl zkusit jinou distribuci. Nešel jsem nijak daleko a zvolil Ubuntu. Nastavení domovské složky se přeneslo automaticky a konfigurační soubory stačilo jednoduše nakopírovat na patřičné místo, ale jak přenést databáze z MySQL serveru, které používám ke svým webovým aplikacím?</p>
+
+<p>Hned mě napadly dvě možnosti, jak databáze přenést. První možnost je restartovat zpět to Debianu a pomocí <em>mysqldump</em> vytvořit sql zálohy i s daty a pak je importovat do MySQL serveru v Ubuntu. Celé se mi to ale zdá nějaké složité, hlavně ten restart. Proto jsem zvolil druhou možnost přenosu databází a to zkopírovat přímo datové soubory MySQL serveru.</p>
+<p>Postup není těžký, ale člověk musí pamatovat na pár důležitých věcí, jako například nastavení příslušných práv nebo vypnutí MySQL serveru v průběhu kopírování dat.</p>
+<div style="border:3px red dotted;"><strong style="font-size:large;">Před kopírováním dat se musí vypnout MySQL server!</strong></div>
+<p>Vypnutí MySQL serveru provedeme v Ubuntu následujícím příkazem:<br>
+</p>
+<div class="geshifilter"><pre class="bash geshifilter-bash" style="font-family:monospace;">shell<span class="sy0">&gt;</span> <span class="kw2">sudo</span> <span class="sy0">/</span>etc<span class="sy0">/</span>init.d<span class="sy0">/</span>mysql stop</pre></div>
+<p>Datové soubory databází se obvykle nacházejí ve složce <strong>/var/lib/mysql</strong>. Ale pokud si nejste jistí nebo taková složka neexistuje, podívejte se do souboru <strong>/etc/mysql/my.cnf</strong>, jakou hodnotu nabývá vlastnost <strong><em>datadir</em></strong>.</p>
+<p>Můj MySQL server má <strong><em>datadir</em></strong> opravdu nastaveno na <strong>/var/lib/mysql</strong>. Každá podsložka této složky představuje jednu databázi. </p>
+<p>Uvažujme teoretickou databázi <em>my_database</em> a v ní tabulky <em>table1</em> a <em>table2</em>. Ve složce <strong>/var/lib/mysql/my_database</strong> budou následující soubory.<br>
+</p>
+<div class="geshifilter"><pre class="bash geshifilter-bash" style="font-family:monospace;">shell<span class="sy0">&gt;</span> <span class="kw2">sudo</span> <span class="kw2">ls</span> <span class="re5">-l</span> <span class="sy0">/</span>var<span class="sy0">/</span>lib<span class="sy0">/</span>mysql<span class="sy0">/</span>my_database
+<span class="re5">-rw-rw----</span>  <span class="nu0">1</span> mysql mysql   <span class="nu0">65</span> Jul <span class="nu0">21</span> <span class="nu0">20</span>:<span class="nu0">52</span> db.opt
+<span class="re5">-rw-rw----</span>  <span class="nu0">1</span> mysql mysql <span class="nu0">8612</span> Jul <span class="nu0">21</span> <span class="nu0">21</span>:<span class="nu0">15</span> table1.frm
+<span class="re5">-rw-rw----</span>  <span class="nu0">1</span> mysql mysql   <span class="nu0">20</span> Jul <span class="nu0">21</span> <span class="nu0">21</span>:<span class="nu0">17</span> table1.MYD
+<span class="re5">-rw-rw----</span>  <span class="nu0">1</span> mysql mysql <span class="nu0">2048</span> Jul <span class="nu0">21</span> <span class="nu0">21</span>:<span class="nu0">20</span> table1.MYI
+<span class="re5">-rw-rw----</span>  <span class="nu0">1</span> mysql mysql <span class="nu0">8612</span> Jul <span class="nu0">21</span> <span class="nu0">21</span>:<span class="nu0">15</span> table2.frm
+<span class="re5">-rw-rw----</span>  <span class="nu0">1</span> mysql mysql   <span class="nu0">20</span> Jul <span class="nu0">21</span> <span class="nu0">21</span>:<span class="nu0">17</span> table2.MYD
+<span class="re5">-rw-rw----</span>  <span class="nu0">1</span> mysql mysql <span class="nu0">2048</span> Jul <span class="nu0">21</span> <span class="nu0">21</span>:<span class="nu0">20</span> table2.MYI</pre></div>
+<br>
+Jde vidět, že každá tabulka má soubory typu <em>frm</em>, <em>MYD</em> a <em>MYI</em>. Důležitější ovšem je, že jejich vlastníkem je uživatel <strong><em>mysql</em></strong> patřící do stejnojmené skupiny. Na to musím při kopírování pamatovat.
+<p>Teď už můžu jít kopírovat kopírovat. Disk s Debianem mám mountlý v <strong>/media/disk</strong>, takže skutečné datové soubory se nachází v <strong>/media/disk/var/lib/mysql</strong>. Následujícím příkazem zkopíruju soubory databáze z Debianu do Ubuntu.<br>
+</p>
+<div class="geshifilter"><pre class="bash geshifilter-bash" style="font-family:monospace;">shell<span class="sy0">&gt;</span> <span class="kw2">sudo</span> <span class="kw2">cp</span> <span class="re5">-R</span> <span class="sy0">/</span>media<span class="sy0">/</span>disk<span class="sy0">/</span>var<span class="sy0">/</span>lib<span class="sy0">/</span>mysql<span class="sy0">/</span>my_database <span class="sy0">/</span>var<span class="sy0">/</span>lib<span class="sy0">/</span>mysql</pre></div>
+<br>
+Ovšem kopíroval jsem jako <em>root</em> a složka i všechny její soubory jsou <em>rootem</em> vlastněny. Následující dva příkazy nastaví správného vlastníka i skupinu. Jsou dva, protože složka my_database má jinou skupinu než soubory v ní..<br>
+<div class="geshifilter"><pre class="bash geshifilter-bash" style="font-family:monospace;">shell<span class="sy0">&gt;</span> <span class="kw2">sudo</span> <span class="kw2">chown</span> <span class="re5">-R</span> mysql:mysql <span class="sy0">/</span>var<span class="sy0">/</span>lib<span class="sy0">/</span>mysql<span class="sy0">/</span>my_database
+shell<span class="sy0">&gt;</span> <span class="kw2">sudo</span> <span class="kw2">chown</span> mysql:root <span class="sy0">/</span>var<span class="sy0">/</span>lib<span class="sy0">/</span>mysql<span class="sy0">/</span>my_database</pre></div>
+<br>
+Tím jsem skoro hotov. Stačí jen nastartovat MySQL server.<br>
+<div class="geshifilter"><pre class="bash geshifilter-bash" style="font-family:monospace;">shell<span class="sy0">&gt;</span> <span class="kw2">sudo</span> <span class="sy0">/</span>etc<span class="sy0">/</span>init.d<span class="sy0">/</span>mysql start</pre></div>
+<br>
+A dále nějakým MySQL klientem zkontrolovat, jestli mám k databázím přístup. Já používám obyčejný klient <em>mysql</em>.<br>
+<div class="geshifilter"><pre class="bash geshifilter-bash" style="font-family:monospace;">shell<span class="sy0">&gt;</span> mysql <span class="re5">-u</span> root <span class="re5">-p</span>
+mysql<span class="sy0">&gt;</span> use my_database;
+mysql<span class="sy0">&gt;</span> <span class="kw1">select</span> <span class="sy0">*</span> from table1;
+           ...</pre></div>
+<p>Pokud někde nastane chyba, zkontrolujte ještě jednou všechna přístupová práva souborů. Tato metoda přesunu dat je ovšem tak jednoduchá, že by žádný problém nastat neměl.</p>
+
+
+<footer></footer>
+</article>
+</div>
+</section>
+<aside class='wrapper quarter' id='sidebar-right'>
+<div class='inn'></div>
+</aside>
+</section>
+<footer class='row wrapper' id='footer'>
+<section class='half taj'>
+<h3>O stránkách a o mně</h3>
+Internet je podle mě médium, které bude vždy o kus předemnou. Ovšem vždycky na tom budou někteří ještě hůř než já a těm jsou stránky určeny především.
+<br>
+Stránky jsou na Internetu od roku 2008. Zažily hodně změn a byly častokrát opuštěny. Zásadní změna přišla v roce 2014, kdy jsem provedl redesign a sloučil všechny tématické větve do hlavní stránky.
+<br>
+Já jsem fanda, moravský <a href="http://programatornavolnenoze.cz">programátor na volné noze</a>.
+</section>
+<section class='quarter tac'>
+<br>
+Licence na obsah:
+<img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" />
+<br>
+<a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
+<br>
+<br>
+<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
+</section>
+<section class='quarter'>
+pra
+</section>
+</footer>
+
+</div>
+</body>
+</html>
+

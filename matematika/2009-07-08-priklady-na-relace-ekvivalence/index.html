@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<title>Příklady na relace a ekvivalence</title>
+<link href="/a/cs/app.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/a/script/app.js" type="text/javascript"></script>
+</head>
+
+<body class='matematika matematika_2009-07-08-priklady-na-relace-ekvivalence matematika_2009-07-08-priklady-na-relace-ekvivalence_index one-sidebar-right'>
+<div id='container'>
+<header id='header'>
+<div id='noc'></div>
+<div class='content'>
+<h1 id='sitename'>
+<a href='/'>Fanda Internetu</a>
+</h1>
+<nav id='primary'>
+<ul class='links primary-links tac'>
+<li><a href="/audio/">Audio</a></li>
+<li><a href="/internet/">Internet</a></li>
+<li>
+<a href="/it/">IT</a>
+<ul class='links primary-inner'>
+<li><a href="/it/cpp">C++</a></li>
+<li><a href="/it/drupal">Drupal</a></li>
+<li><a href="/it/iphone">iPhone</a></li>
+<li><a href="/it/linux">Linux</a></li>
+<li><a href="/it/perl">Perl</a></li>
+<li><a href="/it/python">Python</a></li>
+<li><a href="/it/ruby">Ruby</a></li>
+<li><a href="/it/ostatni">Ostatni</a></li>
+</ul>
+</li>
+<li><a href="/knihy">Knihy</a></li>
+<li><a href="/matematika/">Matematika</a></li>
+<li><a href="/odkazy/">Odkazy</a></li>
+<li>
+<a href="/ostatni/">Ostatní</a>
+<ul class='links primary-inner'>
+<li><a href="/ostatni/pyramidy">Pyramidy</a></li>
+</ul>
+</li>
+<li>
+<a href="/seberozvoj/">Seberozvoj</a>
+<ul class='links primary-inner'>
+<li><a href="/seberozvoj/joga">Jóga</a></li>
+</ul>
+</li>
+<li><a href="/video/">Video</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<div class='content tac' id='featured'>
+<cite>
+Od audio, až po video.
+</cite>
+</div>
+
+<section class='container row wrapper' id='center'>
+<section class='content threequarter' id='content'>
+<div class='inn'><article style='display: block'>
+<header>
+<hgroup>
+<h1>Příklady na relace a ekvivalence</h1>
+<h1 class='subheader'>
+<time> 8.  7. 2009</time>
+</h1>
+</hgroup>
+
+</header>
+<p>Nějaké příklady do diskrétní matematiky.</p>
+
+<h2>Příklad 1</h2>
+<p>Nechť X = {(a, b) | a, b <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" alt="je prvkem" width="11" height="12"> Z, b <img src="http://ifanda.cz/sites/default/files/matsymbol/nerovno.png" alt="nerovno" width="12" height="12"> 0 }. Definujeme (a, b)R(c, d) právě když a*d = b*c. Dokažte, že R je ekvivalence na množině X. Jakou známou množinu tvoří třídy ekvivalence?</p>
+<h3>Řešení:</h3>
+<p>Dokážeme, že relace<br>
+R = { [ (a, b), (c, d) ] | (a, b), (c, d) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" alt="je prvkem" width="11" height="12"> X, B <img src="http://ifanda.cz/sites/default/files/matsymbol/nerovno.png" alt="nerovno" width="12" height="12"> 0  <img src="http://ifanda.cz/sites/default/files/matsymbol/nerovno.png" alt="nerovno" width="12" height="12">d, a*d = b*c }<br>
+je reflexivní, symetrická a zároveň transitivní relace.</p>
+<p>Pro reflexivní relaci platí<br>
+(a, b)R(a, b), tedy [ (a, b), (a, b) ] <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" alt="je prvkem" width="11" height="12"> R<br>
+a proto a*b = b*a, což platí. R je reflexivní relace.</p>
+<p>Má-li být relace R symetrická musí platit, že (je-li) [ (a, b), (c, d) ] <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" alt="je prvkem" width="11" height="12"> R ⇒ [ (c, d), (a, b) ] <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" alt="je prvkem" width="11" height="12"> R. A opravdu platí a*d = b*c ⇒ c*b = d*a a proto je R symetrická relace.</p>
+<p>Zbývá dokázat transitivitu R. Relace R bude transitivní pokud [ (a, b), (c, d) ] <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" alt="je prvkem" width="11" height="12"> R a zároveň  [ (c, d), (e, f) ] <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" alt="je prvkem" width="11" height="12"> R ⇒     [ (a, b), (e, f) ] <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" alt="je prvkem" width="11" height="12"> R. Tedy a*d = b*c a zároveň c*f = d*e ⇒ a*f = b*e. Z první rovnice je a = b*c/d, b = a*d/c, z druhé rovnice f = d*e/c, e = c*f/d. Dosazením do třetí rovnice a úpravou získáme b*e = a*f, což je třetí rovnice a je dokázáno, že relace R je transitivní. Nyní už také můžeme s jistotou prohlásit, že R je ekvivalence. Vytvoříme-li alespoň pro pár hodnot relační tabulku, vidíme, že prvky relace můžeme rozdělit do tříd [(1, 2)], [(2,1)], [(3, 1)],...,[(a, b)] kde a <img src="http://ifanda.cz/sites/default/files/matsymbol/nerovno.png" alt="nerovno" width="12" height="12"> b a jedné velké třídy [(1, 1)] = [(2, 2)],...,[(a, a)]. Zapíšeme-li a*d = b*c jako a/b = c/d, tedy jako zlomky, mohou třídy ekvivalence tvořit třídy shodných zlomků.</p>
+<p> </p>
+<h2>Příklad 2</h2>
+<p>Nechť R je reflexivní a transitivní relace na X. Dokažte, že R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup> je ekvivalence na X.</p>
+<h3>Řešení:</h3>
+<p>R = { (x, y) | x, y <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> X, reflexivní a transitivní  }. Porom R<sup>-1</sup> = { (y, x) | x, y <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> X, (x,y) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R }. Pro R platí že: (x, x) R a že pokud (x, y) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R a zároveň (y, z) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R ⇒ (x, z) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R. Pro R<sup>-1</sup> platí, že (x,x) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R<sup>-1</sup> a že pokud (y, x) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R<sup>-1</sup> a zároveň (x, z) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R<sup>-1</sup> ⇒ (y, z) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R<sup>-1</sup>.</p>
+<p>Definujeme R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup> = { (x, y) | x, y <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> X, (x, y) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R a zároveň (x, y) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> <sup>R-1</sup> }. R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup> je reflexivní, neboť platí, že (x, x) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup> Je také transitivní: (x, y) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup> a zároveň (y, z) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup> ⇒ (x, z) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup>. Zbývá dokázat symetrie relace. Musí platit, že  (x, y) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup> ⇒ (y, x) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup> . A opravdu, protože pro obě relace R a R<sup>-1</sup>platí, že (y, z) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R i R<sup>-1</sup> a (x, z) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R i R<sup>-1</sup>, potom (y, z), (x,z) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup>a proto musí platit i (x, y), (y, x) <img src="http://ifanda.cz/sites/default/files/matsymbol/je_prvkem.png" width="11" height="12" alt="je prvkem" style="null"> R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup>, protože v opačném by neplatila transitivita obou relací, což by bylo ve sporu se zadáním.</p>
+<p>R <img src="http://ifanda.cz/sites/default/files/matsymbol/prunik.png" alt="průnik" width="12" height="12"> R<sup>-1</sup> je ekvivalence.</p>
+<fieldset class="fieldgroup group-links">
+<legend>Odkazy</legend>
+<div class="field field-type-link field-field-related">
+      <div class="field-label">Podobné: </div>
+    <div class="field-items">
+            <div class="field-item odd">
+                    <a href="http://ifanda.cz/clanky/matematika/relace-zobrazeni">Relace a zobrazení</a>        </div>
+              <div class="field-item even">
+                    <a href="http://ifanda.cz/clanky/matematika/relace-zobrazeni-priklady">Relace a zobrazení - příklady</a>        </div>
+        </div>
+</div>
+</fieldset>
+
+
+<footer></footer>
+</article>
+</div>
+</section>
+<aside class='wrapper quarter' id='sidebar-right'>
+<div class='inn'></div>
+</aside>
+</section>
+<footer class='row wrapper' id='footer'>
+<section class='half taj'>
+<h3>O stránkách a o mně</h3>
+Internet je podle mě médium, které bude vždy o kus předemnou. Ovšem vždycky na tom budou někteří ještě hůř než já a těm jsou stránky určeny především.
+<br>
+Stránky jsou na Internetu od roku 2008. Zažily hodně změn a byly častokrát opuštěny. Zásadní změna přišla v roce 2014, kdy jsem provedl redesign a sloučil všechny tématické větve do hlavní stránky.
+<br>
+Já jsem fanda, moravský <a href="http://programatornavolnenoze.cz">programátor na volné noze</a>.
+</section>
+<section class='quarter tac'>
+<br>
+Licence na obsah:
+<img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" />
+<br>
+<a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
+<br>
+<br>
+<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
+</section>
+<section class='quarter'>
+pra
+</section>
+</footer>
+
+</div>
+</body>
+</html>
+

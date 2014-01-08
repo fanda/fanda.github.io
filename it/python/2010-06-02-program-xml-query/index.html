@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<title>Program XML Query</title>
+<link href="/a/cs/app.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/a/script/app.js" type="text/javascript"></script>
+</head>
+
+<body class='it it_python it_python_2010-06-02-program-xml-query it_python_2010-06-02-program-xml-query_index one-sidebar-right'>
+<div id='container'>
+<header id='header'>
+<div id='noc'></div>
+<div class='content'>
+<h1 id='sitename'>
+<a href='/'>Fanda Internetu</a>
+</h1>
+<nav id='primary'>
+<ul class='links primary-links tac'>
+<li><a href="/audio/">Audio</a></li>
+<li><a href="/internet/">Internet</a></li>
+<li>
+<a href="/it/">IT</a>
+<ul class='links primary-inner'>
+<li><a href="/it/cpp">C++</a></li>
+<li><a href="/it/drupal">Drupal</a></li>
+<li><a href="/it/iphone">iPhone</a></li>
+<li><a href="/it/linux">Linux</a></li>
+<li><a href="/it/perl">Perl</a></li>
+<li><a href="/it/python">Python</a></li>
+<li><a href="/it/ruby">Ruby</a></li>
+<li><a href="/it/ostatni">Ostatni</a></li>
+</ul>
+</li>
+<li><a href="/knihy">Knihy</a></li>
+<li><a href="/matematika/">Matematika</a></li>
+<li><a href="/odkazy/">Odkazy</a></li>
+<li>
+<a href="/ostatni/">Ostatní</a>
+<ul class='links primary-inner'>
+<li><a href="/ostatni/pyramidy">Pyramidy</a></li>
+</ul>
+</li>
+<li>
+<a href="/seberozvoj/">Seberozvoj</a>
+<ul class='links primary-inner'>
+<li><a href="/seberozvoj/joga">Jóga</a></li>
+</ul>
+</li>
+<li><a href="/video/">Video</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<div class='content tac' id='featured'>
+<cite>
+Od audio, až po video.
+</cite>
+</div>
+
+<section class='container row wrapper' id='center'>
+<section class='content threequarter' id='content'>
+<div class='inn'><article style='display: block'>
+<header>
+<hgroup>
+<h1>Program XML Query</h1>
+<h1 class='subheader'>
+<time> 2.  6. 2010</time>
+</h1>
+</hgroup>
+
+</header>
+<p>Program XML Query v jazyce Python vznikl jako školní projekt z předmětu Principy programovacích jazyků a OOP. Zde jeho zadání, popisný text k vypracované implementaci a implementace v jazyce Python.</p>
+
+<h2>Zadání</h2>
+<p>Skript provádí vyhodnocení zadaného dotazu, jenž je podobný příkazu SELECT jazyka SQL, nad vstupem ve formátu XML. Výstupem je XML obsahující elementy splňující požadavky dané dotazem. Dotazovací jazyk má zjednodušené podmínky a syntaxi.</p>
+<h3>Dotazovací jazyk</h3>
+<h3>Neformální zápis struktury dotazovacího jazyka</h3>
+<p><span class="geshifilter"><code class="text geshifilter-text">SELECT element LIMIT n FROM element|ROOT WHERE condition ORDER BY element|attribute ASC| DESC</code></span></p>
+<h3>Celá bezkontextová gramatika</h3>
+<ul>
+<li>neterminály jsou úhlových závorkách</li>
+<li>&lt;QUERY&gt; je startující neterminál</li>
+<li>tokeny jsou odděleny bílým znamek</li>
+<li>jazyk je case-sensitive</li>
+<li>Priorita operátorů (od nejvyšší): NOT, AND, OR</li>
+<li>AND a OR jsou levě asociativní</li>
+</ul>
+<pre>
+&lt;QUERY&gt; --&gt; SELECT element &lt;LIMITn&gt; FROM &lt;FROM-ELM&gt; &lt;WHERE-CLAUSE&gt; &lt;ORDER-CLAUSE&gt;
+&lt;LIMITn&gt; --&gt; empty
+&lt;LIMITn&gt; --&gt; LIMIT number
+&lt;FROM-ELM&gt; --&gt; element
+&lt;FROM-ELM&gt; --&gt; ROOT
+&lt;WHERE-CLAUSE&gt; --&gt; empty
+&lt;WHERE-CLAUSE&gt; --&gt; WHERE &lt;CONDITION&gt;
+&lt;CONDITION&gt; --&gt; ( &lt;CONDITION&gt; )
+&lt;CONDITION&gt; --&gt; NOT &lt;CONDITION&gt;
+&lt;CONDITION&gt; --&gt; &lt;CONDITION&gt; AND &lt;CONDITION&gt;
+&lt;CONDITION&gt; --&gt; &lt;CONDITION&gt; OR &lt;CONDITION&gt;
+&lt;CONDITION&gt; --&gt; &lt;ELEMENT-OR-ATTRIBUTE&gt; &lt;RELATION-OPERATOR&gt; &lt;LITERAL&gt;
+&lt;LITERAL&gt; --&gt; string
+&lt;LITERAL&gt; --&gt; number
+&lt;RELATION-OPERATOR&gt; --&gt; CONTAINS
+&lt;RELATION-OPERATOR&gt; --&gt; =
+&lt;RELATION-OPERATOR&gt; --&gt; &gt;
+&lt;RELATION-OPERATOR&gt; --&gt; &lt;
+&lt;ELEMENT-OR-ATTRIBUTE&gt; --&gt; element
+&lt;ELEMENT-OR-ATTRIBUTE&gt; --&gt; attribute
+&lt;ORDER-CLAUSE&gt; --&gt; empty
+&lt;ORDER-CLAUSE&gt; --&gt; ORDER BY &lt;ELEMENT-OR-ATTRIBUTE&gt; &lt;ORDERING&gt;
+&lt;ORDERING&gt; --&gt; ASC
+&lt;ORDERING&gt; --&gt; DESC
+</pre>
+<p><br></p>
+<h3>Lexémy</h3>
+<p><strong>empty</strong> je prázdný řetězec. <strong>number</strong> je celé číslo v běžném 32-bitovém celočíselném rozsahu implementačního jazyka. <strong>element</strong> je identifikátor elementu jazyka XML bez ohraničující úhlových závorek. <strong>attribute</strong> je identifikátor atributu se znamek @ na začátku jako prefix. <strong>string</strong> je řetězec zapsaný v uvozovkách, který neobsahuje žádné netisknutelné znaky, escape sekvence, konec řádku ani uvozovky.</p>
+<h3>Sémantika dotazovacího jazyka</h3>
+<p>Dotaz v klauzuli <strong>FROM</strong> definuje zdrojový element (viz neterminál &lt;FROM-ELM&gt;), kde se následně hledají vnořené výstupní elementy z klausule <strong>SELECT</strong>, které splňují podmínky dané v klauzuli <strong>WHERE</strong>. Poté může být výsledný seznam elementů seřazen klausulí <strong>ORDER BY</strong> a ořezán omezením <strong>LIMIT</strong> na požadovaný maximální počet elementů.<br>
+Hledání zdrojového elementu se provádí do hloubky, dokud se nenarazí na první výskyt zdrojového elementu, kde bude prováděno další zpracování (již se neuvažuje další nepřekrývající zdrojový element jinde na vstupu). Vzájemné zanoření totožných výstupních elementů není řešeno. Výstupní element může být pokaždé zanořen do jiné úrovně ve zdrojovém elementu (nepřekrývajícím způsobem). Klíčové slovo <strong>ROOT</strong> zastupuje virtuální kořenový element zastupující celý XML dokument, který pak obsahuje skutečný kořenový element. Entita z podmínky v klauzuli <strong>WHERE</strong> se hledá opět do hloubky po první svůj výskyt. Není-li tato entita v aktuálně kontrolovaném výstupním elementu nalezena nebo je její první výskyt špatného typu, je výsledek porovnání (viz neterminál &lt;RELATION-OPERATOR&gt;) nepravdivý.<br>
+Výstupní elementy jsou na výstup kopírovány v nezměněné podobě (včetně všech atributů, hodnot a podelementů), případně obaleny kořenovým elementem v závislosti n parametrech skriptu.<br>
+V případě kolize jmen atributů nebo elementů je uvažován první načtený.</p>
+<h3>Parametry programu</h3>
+<ul>
+<li>
+<strong>--help</strong>   nápověda programu</li>
+<li>
+<strong>--input=filename.ext</strong>   zadaný vstupní soubor ve formátu XML (pokud chybí, čte se standardní vstup)</li>
+<li>
+<strong>--output=filename.ext</strong>   zadaný výstupní soubor ve formátu XML (pokud chybí, píše se na standardní výstup)</li>
+<li>
+<strong>-q=query</strong>   zadaný dotaz v dotazovacím jazyce</li>
+<li>
+<strong>-qf=filename.ext</strong>   dotaz v dotazovacím jazyce zadaný v externím textovém souboru (nelze kombinovat s <strong>-q</strong>
+</li>
+<li>
+<strong>-n</strong>   negenerovat XML hlavičku na výstup skriptu</li>
+<li>
+<strong>-r=element</strong>   jméno párového kořenového elementu obalující výsledky</li>
+</ul>
+<p><br></p>
+<h2>Popis vypracované implementace</h2>
+<p>Pro <em>XML Query</em> byl zvolen Python jako implementační jazyk. Python nutí důsledně dodržovat určitou kulturu psaní zdrojového kódu, čímž kód získává napohled hezkou a dobře čitelnou strukturu. Také více vybízí k používání objektově orientovaného paradigma. Objektově orientovaný přístup skript <em>XML Query</em> využívá přinejmenším k blokovému uspořádání jednotlivých dekompozičních částí návrhu a mnoho potenciálu objektového programování tak zůstává nevyužito. Důvodem je především snaha o zachování jednoduchosti. </p>
+<p>Z hlediska dekompozice byl program v návrhu rozdělen na tři části a to na získání a zpracování vstupních parametrů a dotazovacího jazyka, dále hledání, filtrování a řazení dat a jako poslední část výstup výsledku předchozí části. Tato dekompozice zůstala zachována jen částečně, jelikož výstup výsledků se ukázal implementačně jednoduchý a jakákoliv snaha jej někam začleňovat by program znepřehlednila. Naopak vstup a zpracování parametrů se ukázaly jako hodny státi se soběstačnou jednotkou, neboť se kvůli nestandardnímu parametru –qf nemohl (nebo jen s potížemi) použít modul getopt. Výsledkem je program sestávající ze tří tříd pro objekty, jež vycházejí z dekompozice programu, dále z pomocné struktury a jednoho funktoru pro snadné výpisy chyb a ukončení programu.<br>
+</p>
+<h3>1. část programu: zpracování vstupních parametrů, třída OptionHandler</h3>
+<p>Jak bylo řečeno, jedná se o část, která se díky výskytu nestandardních vstupních parametrů stala samostatnou jednotkou, respektive třídou. Jedná se ovšem o velmi jednoduchou třídu, která si vystačí s jedním atributem a jednou metodou. Veškerou práci vykoná konstruktor, jehož úkolem je naplnit slovník přepínačů a parametrů. Použita je, stejně jako v předešlém skriptu, metoda regulárních výrazů nad řetězcem všech parametrů ve tvaru, jak je zapsal uživatel, zkracující s každým dalším parametrem řetězec, takže úspěšné vyhodnocení parametrů je ekvivalentní prázdnému řetězci parametrů na konci metody. V případě skriptu <em>XML Query</em> si však tato metoda žádá podmínku vyhodnocení parametru -q až na samém konci zpracování, neboť jedině tak je zaručen vstup celého dotazu do programu. Přístup ostatních objektů k parametrům program zajišťuje zpráva get().<br>
+</p>
+<h3>2. část programu: parsování dotazu, třída Query</h3>
+<p>Vstupní dotaz se samozřejmě musí zkontrolovat, je-li syntakticky správný, a je třeba jej přeložit do jazyka Python. Dotaz je rozdělen na část čitelnou v regulárním výrazem a část nečitelnou regulárním výrazem. Zatímco první část je jednoduše a rychle zpracována pomocí prostředků jazyka Python pro regulární výrazy, druhá část vyžadovala složitější syntaktickou analýzu. Byla implementována precedenční analýza za pomoci precedenční tabulky pro vyskytující se logické operátory a za pomoci zásobníku. Vstupní řetězec je tokenizován regulárními výrazy přímo za běhu precedenční analýzy. Jednotlivé nalezené podmínky dotazu jsou uloženy do struktury Condition, složené podmínky jsou vkládány v prefixové notaci do polí libovolně do sebe zanořených. Precedenční analýza je implementována v privátní metodě třídy Query. Kromě této metody zde existuje již jen přístupová metoda get(), která vrací datovou strukturu jazyka Python, slovník, naplněnou informacemi z dotazu.<br>
+</p>
+<h3>3. část programu: získání požadovaných dat z XML souboru, třída QuerySearch</h3>
+<p>Získávání dat z XML se na první pohled zdá jako velký problém, avšak jazyk Python jej svými předprogramovanými funkcemi výrazně ulehčuje. Ze dvou přístupů k XML datům, které knihovna jazyka nabízí, byl zvolen přístup DOM, respektive jeho implementace v modulu xml.dom.minidom. Výhody a nevýhody tohoto přístupu jsou snadno zjistitelné z jiných zdrojů, proto je netřeba podrobněji rozebírat. Je potřeba zmínit snad jen to, že DOM má velké vyjadřovací schopnosti,  které jsou ovšem vykoupeny paměťovou náročností. Jinými slovy s rostoucím objemem XML souboru rostou i nároky na paměť procesu, takže program má jistou, na parametrech počítače závislou, hranici, po jejímž překročení se stává hůře použitelným. Omezení je odstranitelné volbou a implementací jiného přístupu k datům. Třída přebírá jako parametr slovník s dotazem, jak jej definuje třída Query a podle něj a za pomocí předprogramovaných funkcí prochází data. Ta jsou nejdříve načtena všechna a poté postupně filtrována tak, aby nakonec zbyla jen data uživatelem požadovaná. Děje se tak i pomocí tří privátních metod pojmenovaných pomocí klausulí dotazovacího jazyka. Z těchto tří metod za zmínku stojí alespoň metoda _where(), kde je rekurzívně implementováno filtrování vnořenými logickými podmínkami. Jejich implementace nebyla těžká a stačilo se nad problémem trochu zamyslet, o čemž více vypoví samotný zdrojový kód. Ani v této třídě nechybí metoda pro přístupovou zprávu get().</p>
+<p>Instance všech tří tříd jsou použity v bloku kódu představující hlavní běh programu. Na stejném místě je prováděn výpis výstupu programu.<br>
+<br></p>
+<h2>Implementace programu v jazyce Python</h2>
+<pre class="highlight python"><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">xml.dom.minidom</span> <span class="kn">as</span> <span class="nn">xd</span>
+<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">string</span><span class="o">,</span> <span class="nn">os</span>
+
+
+<span class="s">&quot;&quot;&quot;
+    Error hanler for this program
+&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">Error</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Error: </span><span class="si">%</span><span class="s">s&quot;</span> <span class="o">%</span> <span class="n">msg</span>
+        <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c"># End of class Error</span>
+
+
+<span class="s">&quot;&quot;&quot;
+    Program parameters hanler
+&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">OptionHandler</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># initialite default values of all options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">nohead</span>   <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+                            <span class="nb">input</span>    <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span>
+                            <span class="n">output</span>   <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+                            <span class="n">query</span>    <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+                            <span class="n">rootelem</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="s">&#39; &#39;</span> <span class="o">+</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="c"># join all together</span>
+
+        <span class="c"># HELP parameter</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">r&quot; --help&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reg</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="n">args</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="c"># other stuff passed</span>
+            <span class="n">Error</span><span class="p">(</span><span class="s">&quot;no more parameters with --help allowed&quot;</span><span class="p">)</span>
+          <span class="k">print</span> <span class="s">&quot;Program XML Query&quot;</span>
+          <span class="k">print</span> <span class="s">&quot;Usage: xqr.py -q=&#39;query&#39;|-qf=file.ext [OPTIONS]&quot;</span><span class="p">;</span>
+          <span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Parameters (only one at time allowed)&quot;</span><span class="p">;</span>
+          <span class="k">print</span> <span class="s">&quot;-q=&#39;query&#39;</span><span class="se">\t\t</span><span class="s">Query (without &#39;&#39;)&quot;</span><span class="p">;</span>
+          <span class="k">print</span> <span class="s">&quot;-qf=file.ext</span><span class="se">\t\t</span><span class="s">Extern file with query&quot;</span><span class="p">;</span>
+          <span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Available options:&quot;</span><span class="p">;</span>
+          <span class="k">print</span> <span class="s">&quot;--input=file1.ext</span><span class="se">\t</span><span class="s">Input XML file&quot;</span><span class="p">;</span>
+          <span class="k">print</span> <span class="s">&quot;--output=file2.ext</span><span class="se">\t</span><span class="s">Output XML file&quot;</span><span class="p">;</span>
+          <span class="k">print</span> <span class="s">&quot;-r=root-element</span><span class="se">\t\t</span><span class="s">Name of the element to wrap result&quot;</span><span class="p">;</span>
+          <span class="k">print</span> <span class="s">&quot;-n</span><span class="se">\t\t\t</span><span class="s">Not to generate XML header&quot;</span><span class="p">;</span>
+          <span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Other controls:</span><span class="se">\n</span><span class="s">--help</span><span class="se">\t\t\t</span><span class="s">This message</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+          <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c"># NOHEAD option</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">r&quot; -n&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reg</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;nohead&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+        <span class="c"># ROOTELEM option</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">r&quot; -r=(</span><span class="err">\</span><span class="s">S+)&quot;</span><span class="p">)</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;rootelem&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+        <span class="c"># INPUT file option</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">r&quot; --input=(</span><span class="err">\</span><span class="s">S+)&quot;</span><span class="p">)</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="k">try</span><span class="p">:</span> <span class="c"># change input file handler</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;input&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+          <span class="k">except</span><span class="p">:</span>
+            <span class="n">Error</span><span class="p">(</span><span class="s">&quot;problem with input file&quot;</span><span class="p">)</span>
+          <span class="n">args</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+        <span class="c"># OUTPUT file option</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">r&quot; --output=(</span><span class="err">\</span><span class="s">S+)&quot;</span><span class="p">)</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="k">try</span><span class="p">:</span> <span class="c"># change output file handler</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;output&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+          <span class="k">except</span><span class="p">:</span>
+            <span class="n">Error</span><span class="p">(</span><span class="s">&quot;problem with output file&quot;</span><span class="p">)</span>
+          <span class="n">args</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+        <span class="c"># QUERY file option</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">r&quot; -qf=(</span><span class="err">\</span><span class="s">S+)&quot;</span><span class="p">)</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="k">try</span><span class="p">:</span> <span class="c"># open, read whole query and close</span>
+            <span class="nb">file</span><span class="n">obj</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">file</span><span class="n">obj</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="nb">file</span><span class="n">obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+          <span class="k">except</span><span class="p">:</span>
+            <span class="n">Error</span><span class="p">(</span><span class="s">&quot;problem with query file input&quot;</span><span class="p">)</span>
+          <span class="n">args</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+        <span class="c"># QUERY parameter option (must be proceed last)</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">r&quot; -q=(.*)&quot;</span><span class="p">)</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;query&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">Error</span><span class="p">(</span><span class="s">&quot;two queries defined&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+        <span class="c"># invalid parameters check</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+          <span class="n">Error</span><span class="p">(</span><span class="s">&quot;unknown or wrong parameters input (run with --help)&quot;</span><span class="p">)</span>
+
+
+    <span class="c"># returns options dictionary</span>
+    <span class="k">def</span> <span class="nf">getoptions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span>
+
+<span class="c"># End of class OptHandler</span>
+
+
+<span class="s">&quot;&quot;&quot;
+    Condition structure of WHERE-CLAUSE
+&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">Condition</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">lit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">op</span>
+        <span class="k">if</span> <span class="n">lit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&quot;&#39;</span><span class="p">:</span> <span class="c"># literal is string</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">literal</span> <span class="o">=</span> <span class="n">lit</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c"># literal is number</span>
+          <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s">&#39;CONTAINS&#39;</span><span class="p">:</span>
+            <span class="n">Error</span><span class="p">(</span><span class="s">&quot;Operator CONTAINS accept only string literal&quot;</span><span class="p">);</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">literal</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lit</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;@&#39;</span><span class="p">:</span> <span class="c"># value is attribute</span>
+            <span class="bp">self</span><span class="o">.</span><span class="nb">type</span> <span class="o">=</span> <span class="s">&#39;attribute&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="nb">id</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c"># value is element</span>
+            <span class="bp">self</span><span class="o">.</span><span class="nb">type</span> <span class="o">=</span> <span class="s">&#39;element&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="nb">id</span> <span class="o">=</span> <span class="n">val</span>
+
+<span class="c"># End of class Condition</span>
+
+
+<span class="s">&quot;&quot;&quot;
+    Holding XML query in a right way
+&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">Query</span><span class="p">:</span>
+
+    <span class="c"># most of work is done in constructor</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querystring</span><span class="p">):</span>
+        <span class="c"># set option query arguments to None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">ord</span><span class="n">er</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+        <span class="c"># REGEXP of query</span>
+        <span class="n">qr</span><span class="o">=</span><span class="s">&quot;SELECT</span><span class="err">\</span><span class="s">s+(</span><span class="err">\</span><span class="s">S+)</span><span class="err">\</span><span class="s">s+(.+</span><span class="err">\</span><span class="s">s)?FROM</span><span class="err">\</span><span class="s">s+(</span><span class="err">\</span><span class="s">w+)(</span><span class="err">\</span><span class="s">s+WHERE.*?)?(</span><span class="err">\</span><span class="s">s+ORDER.*)?</span><span class="err">\</span><span class="s">s*$&quot;</span>
+
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">qr</span><span class="p">)</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">querystring</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s">&#39;select&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s">&#39;from&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+          <span class="c"># parsing LIMIT query option</span>
+          <span class="k">if</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">relimit</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&quot;LIMIT</span><span class="err">\</span><span class="s">s+(</span><span class="err">\</span><span class="s">d+)</span><span class="err">\</span><span class="s">s+&quot;</span><span class="p">,</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">relimit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s">&#39;limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">relimit</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+              <span class="n">Error</span><span class="p">(</span><span class="s">&quot;wrong LIMIT definition&quot;</span><span class="p">)</span>
+
+          <span class="c"># parsing WHERE query option</span>
+          <span class="k">if</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s">&#39;where&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where</span><span class="p">(</span><span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+            <span class="c"># integer or None can be returned if wrong WHERE clause</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s">&#39;where&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span> \
+            <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s">&#39;where&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+              <span class="n">Error</span><span class="p">(</span><span class="s">&quot;WHERE-CLAUSE is not valid&quot;</span><span class="p">)</span>
+
+          <span class="c"># parsing ORDER query option</span>
+          <span class="k">if</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s">&#39;order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">(</span><span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="s">&#39;order&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+              <span class="n">Error</span><span class="p">(</span><span class="s">&quot;ORDER-CLAUSE is not valid&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span> <span class="c"># rem is None</span>
+          <span class="n">Error</span><span class="p">(</span><span class="s">&quot;input query is not valid&quot;</span><span class="p">)</span>
+
+
+    <span class="c"># WHERE-CLAUSE parser</span>
+    <span class="k">def</span> <span class="nf">_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wherestring</span><span class="p">):</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">&quot;^</span><span class="err">\</span><span class="s">s+WHERE</span><span class="err">\</span><span class="s">s(.*)$&quot;</span><span class="p">)</span> <span class="c"># gets condition</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">wherestring</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+          <span class="n">cond</span> <span class="o">=</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c"># save condition input string</span>
+        <span class="k">except</span><span class="p">:</span>
+          <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="c"># creating of Condition class by parsing ONE contition</span>
+        <span class="k">def</span> <span class="nf">getCondition</span><span class="p">(</span><span class="n">cstr</span><span class="p">):</span>
+            <span class="n">regc</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span>
+            <span class="s">&#39;^</span><span class="err">\</span><span class="s">s*(@?</span><span class="err">\</span><span class="s">w+)</span><span class="err">\</span><span class="s">s+(CONTAINS|=|&gt;|&lt;)</span><span class="err">\</span><span class="s">s+(</span><span class="se">\\</span><span class="s">&quot;</span><span class="err">\</span><span class="s">w+</span><span class="se">\\</span><span class="s">&quot;|</span><span class="err">\</span><span class="s">d+|</span><span class="se">\\</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">&quot;)&#39;</span><span class="p">)</span>
+            <span class="n">rec</span> <span class="o">=</span> <span class="n">regc</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">cstr</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span> <span class="c"># to create Condition</span>
+              <span class="n">C</span><span class="o">=</span><span class="n">Condition</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">rec</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="n">rec</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+            <span class="k">except</span><span class="p">:</span>
+              <span class="k">return</span> <span class="bp">None</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">regc</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="n">cstr</span><span class="p">))</span>
+
+        <span class="c">##</span>
+        <span class="c">## nested condition PARSER</span>
+        <span class="c">##</span>
+        <span class="c">#  parsing table</span>
+        <span class="c">#      0   1   2   3   4   5   6</span>
+        <span class="c">#      NOT AND OR  (   )   C   $</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="p">[[</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">],</span> <span class="c"># NOT</span>
+              <span class="p">[</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">],</span> <span class="c"># AND</span>
+              <span class="p">[</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">],</span> <span class="c"># OR</span>
+              <span class="p">[</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;=&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span> <span class="p">],</span> <span class="c"># (</span>
+              <span class="p">[</span><span class="s">&#39;&#39;</span> <span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span> <span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span> <span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">],</span> <span class="c"># )</span>
+              <span class="p">[</span><span class="s">&#39;&#39;</span> <span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span> <span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span> <span class="p">,</span><span class="s">&#39;&gt;&#39;</span><span class="p">],</span> <span class="c"># C</span>
+              <span class="p">[</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span> <span class="p">,</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span> <span class="p">]]</span> <span class="c"># $</span>
+        <span class="c"># help: pt[row][column]</span>
+        <span class="c">#list of regexps for tokenization</span>
+        <span class="n">reguls</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">&quot;^</span><span class="err">\</span><span class="s">s*NOT</span><span class="err">\</span><span class="s">s&quot;</span><span class="p">),</span>
+                  <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">&quot;^</span><span class="err">\</span><span class="s">s+AND</span><span class="err">\</span><span class="s">s&quot;</span><span class="p">),</span>
+                  <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">&quot;^</span><span class="err">\</span><span class="s">s+OR</span><span class="err">\</span><span class="s">s&quot;</span><span class="p">),</span>
+                  <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">&quot;^</span><span class="err">\</span><span class="s">s*</span><span class="err">\</span><span class="s">(&quot;</span><span class="p">),</span>
+                  <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">&quot;^</span><span class="err">\</span><span class="s">s*</span><span class="err">\</span><span class="s">)&quot;</span><span class="p">)]</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span>   <span class="c"># incializing stack with $</span>
+        <span class="n">sterm</span> <span class="o">=</span> <span class="mi">6</span>     <span class="c"># top term on the stack</span>
+        <span class="nb">int</span><span class="n">erm</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># input token</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="bp">None</span>      <span class="c"># condition handler</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>   <span class="c"># parsing cycle</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span> <span class="c"># range of terms</span>
+              <span class="nb">int</span><span class="n">erm</span> <span class="o">=</span> <span class="n">i</span>
+              <span class="n">action</span> <span class="o">=</span> <span class="n">pt</span><span class="p">[</span><span class="n">sterm</span><span class="p">][</span><span class="nb">int</span><span class="n">erm</span><span class="p">]</span>
+              <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span> <span class="c"># condition found</span>
+                <span class="n">ctuple</span> <span class="o">=</span> <span class="n">getCondition</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ctuple</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">cond</span> <span class="o">=</span> <span class="n">ctuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">C</span> <span class="o">=</span> <span class="n">ctuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">break</span>
+              <span class="k">elif</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">6</span><span class="p">:</span> <span class="c"># term found</span>
+                <span class="k">if</span> <span class="n">reguls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">cond</span><span class="p">):</span>
+                  <span class="k">if</span> <span class="n">action</span> <span class="o">!=</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
+                    <span class="n">cond</span> <span class="o">=</span> <span class="n">reguls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">cond</span><span class="p">)</span>
+                  <span class="k">break</span>
+              <span class="c"># else i == 7 =&gt; interm == 6 =&gt; end of input</span>
+            <span class="k">if</span> <span class="n">sterm</span> <span class="o">==</span> <span class="nb">int</span><span class="n">erm</span> <span class="ow">and</span> <span class="n">sterm</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+              <span class="n">Error</span><span class="p">(</span><span class="s">&quot;syntax error in WHERE-CLAUSE&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&#39;=&#39;</span><span class="p">:</span>
+              <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="n">erm</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
+              <span class="n">pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+              <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&lt;&#39;</span><span class="p">)</span>
+              <span class="c"># look for top term in the stack</span>
+              <span class="k">while</span> <span class="nb">type</span><span class="p">(</span><span class="n">stack</span><span class="p">[</span><span class="n">pos</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pos</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                  <span class="n">stack</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span><span class="n">stack</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="n">pos</span><span class="p">],</span><span class="n">stack</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                  <span class="n">pos</span> <span class="o">-=</span> <span class="mi">1</span>
+              <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="n">erm</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
+              <span class="n">R</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+              <span class="n">Cs</span> <span class="o">=</span> <span class="p">[]</span>
+              <span class="k">while</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span> <span class="c"># look for top &#39;&lt;&#39;</span>
+                  <span class="n">symbol</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="c"># get top symbol</span>
+                  <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="c"># term found</span>
+                    <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span> <span class="c"># apply fifth grammar</span>
+                      <span class="n">stack</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">C</span><span class="p">)</span>
+                      <span class="k">break</span> <span class="c"># and nothing more to do</span>
+                    <span class="n">R</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span> <span class="o">+</span> <span class="n">R</span> <span class="c"># else write term to the string</span>
+                  <span class="k">else</span><span class="p">:</span> <span class="c"># nonterm found</span>
+                    <span class="n">Cs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+                    <span class="n">R</span> <span class="o">=</span> <span class="s">&#39;-&#39;</span> <span class="o">+</span> <span class="n">R</span> <span class="c"># write substitute symbol</span>
+              <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+              <span class="c"># grammar search</span>
+              <span class="k">if</span> <span class="n">R</span> <span class="o">==</span> <span class="s">&#39;0-&#39;</span><span class="p">:</span>
+                  <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s">&#39;N&#39;</span><span class="p">,</span> <span class="n">Cs</span><span class="o">.</span><span class="n">pop</span><span class="p">()])</span>
+              <span class="k">elif</span> <span class="n">R</span> <span class="o">==</span> <span class="s">&#39;3-4&#39;</span><span class="p">:</span>
+                  <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Cs</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+              <span class="k">elif</span> <span class="n">R</span> <span class="o">==</span> <span class="s">&#39;-1-&#39;</span><span class="p">:</span>
+                  <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="n">Cs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Cs</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+              <span class="k">elif</span> <span class="n">R</span> <span class="o">==</span> <span class="s">&#39;-2-&#39;</span><span class="p">:</span>
+                  <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s">&#39;O&#39;</span><span class="p">,</span> <span class="n">Cs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Cs</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+            <span class="c"># top term search</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="nb">type</span><span class="p">(</span><span class="n">stack</span><span class="p">[</span><span class="n">pos</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">pos</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">sterm</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+            <span class="c"># end of while True</span>
+        <span class="k">return</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="c"># final nested condition on the top</span>
+
+
+    <span class="c"># ORDER-CLAUSE parser</span>
+    <span class="k">def</span> <span class="nf">_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">ord</span><span class="n">erstring</span><span class="p">):</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">&quot;^</span><span class="err">\</span><span class="s">s+ORDER BY</span><span class="err">\</span><span class="s">s(.*)$&quot;</span><span class="p">)</span> <span class="c"># gets clause</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">ord</span><span class="n">erstring</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+          <span class="n">clause</span> <span class="o">=</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+          <span class="k">return</span> <span class="bp">None</span>
+        <span class="c"># parse clause</span>
+        <span class="nb">ord</span><span class="n">er</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">element</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">&quot;(@?</span><span class="err">\</span><span class="s">w+)</span><span class="err">\</span><span class="s">s+(ASC|DESC)$&quot;</span><span class="p">)</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">clause</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rem</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;by&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+          <span class="n">atrelem</span> <span class="o">=</span> <span class="n">rem</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">atrelem</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;@&#39;</span><span class="p">:</span>
+            <span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;attribute&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atrelem</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c"># do not include &#39;@&#39;</span>
+          <span class="k">else</span><span class="p">:</span>
+            <span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;element&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atrelem</span>
+        <span class="k">return</span> <span class="nb">ord</span><span class="n">er</span>
+
+
+    <span class="c"># returns query dictionary</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span>
+
+<span class="c"># End of class Query</span>
+
+
+<span class="s">&quot;&quot;&quot;
+    XML search machine
+&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">QuerySearch</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">xd</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c"># analyzing input query dictionary</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;from&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;ROOT&#39;</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">documentElement</span><span class="p">]</span>
+          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">documentElement</span><span class="o">.</span><span class="n">tagName</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;select&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">documentElement</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;from&#39;</span><span class="p">])</span>
+        <span class="c"># getting all of selected elements</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+          <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;select&#39;</span><span class="p">]))</span>
+            <span class="k">break</span> <span class="c"># ONLY FIRST ELEMENT</span>
+        <span class="c"># filter unwanted elements</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;where&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;where&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span>
+        <span class="c"># sorting</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;order&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;order&#39;</span><span class="p">])</span>
+        <span class="c"># cutting</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;limit&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;limit&#39;</span><span class="p">])</span>
+
+
+    <span class="c"># effective filtering</span>
+    <span class="k">def</span> <span class="nf">_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">where</span><span class="p">,</span> <span class="n">elements</span><span class="p">):</span>
+
+        <span class="c"># condition choise evaluating</span>
+        <span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="n">xvalue</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="c"># this operator work only for numbers</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">):</span>
+              <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s">&#39;CONTAINS&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">xvalue</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                  <span class="k">return</span> <span class="bp">True</span>
+              <span class="n">val</span> <span class="o">=</span> <span class="n">xvalue</span>
+            <span class="k">else</span><span class="p">:</span>
+              <span class="k">try</span><span class="p">:</span> <span class="c"># recognize number or its False for default</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">xvalue</span><span class="p">)</span>
+              <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="c"># those operators works for string and numbers too</span>
+            <span class="k">if</span>   <span class="n">op</span> <span class="o">==</span> <span class="s">&#39;=&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">val</span> <span class="o">==</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">val</span>  <span class="o">&gt;</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">val</span>  <span class="o">&lt;</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="c"># only one Condition to apply</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">where</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">([]):</span>
+          <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
+          <span class="k">if</span> <span class="n">where</span><span class="o">.</span><span class="nb">type</span> <span class="o">==</span> <span class="s">&#39;element&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+              <span class="c"># filtering selected elements</span>
+              <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">tagName</span> <span class="o">==</span> <span class="n">where</span><span class="o">.</span><span class="nb">id</span><span class="p">:</span>
+                <span class="n">xvalue</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">firstChild</span><span class="o">.</span><span class="n">data</span>
+                <span class="k">if</span> <span class="n">condition</span><span class="p">(</span><span class="n">xvalue</span><span class="p">,</span> <span class="n">where</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="n">where</span><span class="o">.</span><span class="n">literal</span><span class="p">):</span>
+                  <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+                <span class="k">continue</span>
+              <span class="c"># filtering nested elements</span>
+              <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">el</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">where</span><span class="o">.</span><span class="nb">id</span><span class="p">):</span>
+                  <span class="n">xvalue</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">firstChild</span> <span class="c"># get element input</span>
+                  <span class="k">if</span> <span class="ow">not</span> <span class="n">xvalue</span><span class="o">.</span><span class="n">hasChildNodes</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">condition</span><span class="p">(</span><span class="n">xvalue</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">where</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="n">where</span><span class="o">.</span><span class="n">literal</span><span class="p">):</span>
+                      <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+                  <span class="k">break</span>
+              <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+          <span class="k">else</span><span class="p">:</span> <span class="c"># where.type == &#39;attribute&#39;</span>
+            <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+              <span class="c"># filtering selected elements</span>
+              <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="n">where</span><span class="o">.</span><span class="nb">id</span><span class="p">):</span>
+                <span class="n">xvalue</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="n">where</span><span class="o">.</span><span class="nb">id</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">condition</span><span class="p">(</span><span class="n">xvalue</span><span class="p">,</span> <span class="n">where</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="n">where</span><span class="o">.</span><span class="n">literal</span><span class="p">):</span>
+                  <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+                  <span class="k">continue</span>
+              <span class="c"># filtering nested elements</span>
+              <span class="k">for</span> <span class="n">subel</span> <span class="ow">in</span> <span class="n">el</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&#39;*&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">subel</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="n">where</span><span class="o">.</span><span class="nb">id</span><span class="p">):</span>
+                  <span class="n">xvalue</span> <span class="o">=</span> <span class="n">subel</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="n">where</span><span class="o">.</span><span class="nb">id</span><span class="p">)</span>
+                  <span class="k">if</span> <span class="n">condition</span><span class="p">(</span><span class="n">xvalue</span><span class="p">,</span> <span class="n">where</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="n">where</span><span class="o">.</span><span class="n">literal</span><span class="p">):</span>
+                    <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+                    <span class="k">break</span>
+          <span class="k">return</span> <span class="n">found</span>
+
+        <span class="c"># logical operator must by applied</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">where</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">):</span>
+          <span class="k">if</span>   <span class="n">where</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;A&#39;</span><span class="p">:</span> <span class="c"># AND operator</span>
+            <span class="c"># filter result of first filter</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where</span><span class="p">(</span><span class="n">where</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where</span><span class="p">(</span><span class="n">where</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">elements</span><span class="p">))</span>
+
+          <span class="k">elif</span> <span class="n">where</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;N&#39;</span><span class="p">:</span> <span class="c"># NOT operator</span>
+            <span class="n">unwanted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where</span><span class="p">(</span><span class="n">where</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">elements</span><span class="p">)</span>
+            <span class="c"># look, i can do nice filter too ;)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="n">e</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unwanted</span><span class="p">]</span>
+
+          <span class="k">elif</span> <span class="n">where</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;O&#39;</span><span class="p">:</span> <span class="c"># OR operator</span>
+            <span class="n">duplicates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where</span><span class="p">(</span><span class="n">where</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">elements</span><span class="p">)</span>
+            <span class="n">duplicates</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_where</span><span class="p">(</span><span class="n">where</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">elements</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">duplicates</span><span class="p">))</span> <span class="c"># my little uniq</span>
+
+        <span class="c"># array of conditions appeared</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">_where</span><span class="p">(</span><span class="n">where</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">elements</span><span class="p">)</span>
+
+
+    <span class="c"># elements sorting</span>
+    <span class="k">def</span> <span class="nf">_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">ord</span><span class="n">er</span><span class="p">):</span>
+        <span class="nb">ord</span><span class="n">erlist</span> <span class="o">=</span> <span class="p">[]</span> <span class="c"># for tuples like (data, element)</span>
+        <span class="k">if</span> <span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;element&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="c"># sorting selected elements</span>
+            <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">tagName</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="s">&#39;select&#39;</span><span class="p">]:</span>
+              <span class="nb">ord</span><span class="n">erlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">el</span><span class="o">.</span><span class="n">firstChild</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">el</span><span class="p">))</span>
+              <span class="k">continue</span>
+            <span class="c"># sorting nested elements</span>
+            <span class="k">try</span><span class="p">:</span>
+              <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">el</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;element&#39;</span><span class="p">]):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">firstChild</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">hasChildNodes</span><span class="p">():</span>
+                    <span class="nb">ord</span><span class="n">erlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">value</span><span class="p">,</span> <span class="n">el</span><span class="p">))</span>
+                <span class="k">break</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">elif</span> <span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;attribute&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;attribute&#39;</span><span class="p">]):</span>
+                <span class="c"># sorting selected elements</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;attribute&#39;</span><span class="p">])</span>
+                <span class="nb">ord</span><span class="n">erlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">el</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;attribute&#39;</span><span class="p">]),</span> <span class="n">el</span><span class="p">))</span>
+                <span class="k">continue</span>
+            <span class="c"># sorting nested elements</span>
+            <span class="k">for</span> <span class="n">subel</span> <span class="ow">in</span> <span class="n">el</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&#39;*&#39;</span><span class="p">):</span>
+              <span class="k">if</span> <span class="n">subel</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;attribute&#39;</span><span class="p">]):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">subel</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;attribute&#39;</span><span class="p">])</span>
+                <span class="nb">ord</span><span class="n">erlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">value</span><span class="p">,</span> <span class="n">el</span><span class="p">))</span>
+                <span class="k">break</span>
+        <span class="c"># ordering tuples by element&#39;s data</span>
+        <span class="k">try</span><span class="p">:</span>
+          <span class="nb">ord</span><span class="n">erlist</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+          <span class="nb">ord</span><span class="n">erlist</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c"># BY DESC or ASC</span>
+        <span class="k">if</span> <span class="nb">ord</span><span class="n">er</span><span class="p">[</span><span class="s">&#39;by&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;DESC&#39;</span><span class="p">:</span>
+          <span class="nb">ord</span><span class="n">erlist</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+
+        <span class="c"># fill sorted elements back</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">ord</span><span class="n">erlist</span><span class="p">]</span>
+
+
+    <span class="c"># very easy limit</span>
+    <span class="k">def</span> <span class="nf">_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">limit</span><span class="p">)]</span>
+
+
+    <span class="c"># returns query dictionary</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span>
+
+<span class="c"># End of class QuerySearch</span>
+
+
+<span class="s">&quot;&quot;&quot;
+    # MAIN #
+&quot;&quot;&quot;</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">opt</span> <span class="o">=</span> <span class="n">OptionHandler</span><span class="p">()</span><span class="o">.</span><span class="n">getoptions</span><span class="p">()</span> <span class="c"># program parameters parsing</span>
+  <span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="n">opt</span><span class="p">[</span><span class="s">&#39;query&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c"># query parsing</span>
+
+  <span class="c"># OUTPUT</span>
+  <span class="c">#</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;nohead&#39;</span><span class="p">]:</span> <span class="c"># HEAD?</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;output&#39;</span><span class="p">],</span> <span class="s">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&#39;</span>
+
+  <span class="k">if</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;rootelem&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="c">#  ROOT ELEMENT?</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;output&#39;</span><span class="p">],</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;rootelem&#39;</span><span class="p">],</span> <span class="s">&quot;&gt;&quot;</span><span class="p">])</span>
+
+  <span class="c">### getting and writing results</span>
+  <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">QuerySearch</span><span class="p">(</span><span class="n">opt</span><span class="p">[</span><span class="s">&#39;input&#39;</span><span class="p">],</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;output&#39;</span><span class="p">],</span> <span class="n">element</span><span class="o">.</span><span class="n">toxml</span><span class="p">()</span>
+  <span class="c">###</span>
+
+  <span class="k">if</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;rootelem&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="c"># /ROOT ELEMENT?</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;output&#39;</span><span class="p">],</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;&lt;/&quot;</span><span class="p">,</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;rootelem&#39;</span><span class="p">],</span> <span class="s">&quot;&gt;&quot;</span><span class="p">])</span>
+  <span class="c">#</span>
+  <span class="c"># END of OUTPUT</span>
+
+  <span class="c"># closing of opened files</span>
+  <span class="k">if</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;output&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span>
+    <span class="n">opt</span><span class="p">[</span><span class="s">&#39;output&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+  <span class="k">if</span> <span class="n">opt</span><span class="p">[</span><span class="s">&#39;input&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span>
+    <span class="n">opt</span><span class="p">[</span><span class="s">&#39;input&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c"># End of program xqr.py</span>
+</pre>
+<footer></footer>
+</article>
+</div>
+</section>
+<aside class='wrapper quarter' id='sidebar-right'>
+<div class='inn'></div>
+</aside>
+</section>
+<footer class='row wrapper' id='footer'>
+<section class='half taj'>
+<h3>O stránkách a o mně</h3>
+Internet je podle mě médium, které bude vždy o kus předemnou. Ovšem vždycky na tom budou někteří ještě hůř než já a těm jsou stránky určeny především.
+<br>
+Stránky jsou na Internetu od roku 2008. Zažily hodně změn a byly častokrát opuštěny. Zásadní změna přišla v roce 2014, kdy jsem provedl redesign a sloučil všechny tématické větve do hlavní stránky.
+<br>
+Já jsem fanda, moravský <a href="http://programatornavolnenoze.cz">programátor na volné noze</a>.
+</section>
+<section class='quarter tac'>
+<br>
+Licence na obsah:
+<img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" />
+<br>
+<a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
+<br>
+<br>
+<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
+</section>
+<section class='quarter'>
+pra
+</section>
+</footer>
+
+</div>
+</body>
+</html>
+
