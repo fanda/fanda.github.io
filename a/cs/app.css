@@ -1970,3 +1970,7 @@ article {
   /* line 182, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   .book-navigation .page-links .page-up, .book-navigation .page-links .page-number, .paginate .page-up, .paginate .page-number {
     width: 33%; }
+
+/* line 186, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+ul.links li a {
+  display: block; }
