@@ -4,25 +4,41 @@
 <meta charset='utf-8'>
 <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
 <title>Fanda Internetu</title>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
+<script>
+  window.jQuery || document.write('<script src="/a/js/l/jquery.js">\x3C/script>')
+</script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js' type='text/javascript'></script>
+<script>
+  window.Modernizr || document.write('<script src="/a/js/l/modernizr.js">\x3C/script>')
+</script>
+<script src="/a/script/l/fastclick.js" type="text/javascript"></script>
+<script src="/a/script/l/modernizr.js" type="text/javascript"></script>
+<script src="/a/script/l/jquery.cookie.js" type="text/javascript"></script>
+<script src="/a/script/l/placeholder.js" type="text/javascript"></script>
+<script src="/a/script/l/fastclick.js" type="text/javascript"></script>
+<script src="/a/script/l/foundation.custom.js" type="text/javascript"></script>
+<script src="/a/script/script.js" type="text/javascript"></script>
 <link href="/a/cs/app.css" media="screen" rel="stylesheet" type="text/css" />
-<script src="/a/script/app.js" type="text/javascript"></script>
 </head>
 
 <body class='one-sidebar-right strana-3 strana-3_index'>
 <div id='container'>
 <header id='header'>
-<div id='noc'></div>
-<div class='content'>
-<h1 id='sitename'>
-<a href='/'>Fanda Internetu</a>
-</h1>
-<nav id='primary'>
-<ul class='links primary-links tac'>
+<div class='content' id='topmenu'>
+<nav class='top-bar' data-options='is_hover: true' data-topbar>
+<section class='top-bar-section'>
+<ul class='title-area'>
+<li class='name'></li>
+</ul>
+<ul>
 <li><a href="/audio/">Audio</a></li>
+<li class='divider'></li>
 <li><a href="/internet/">Internet</a></li>
-<li>
+<li class='divider'></li>
+<li class='has-dropdown'>
 <a href="/it/">IT</a>
-<ul class='links primary-inner'>
+<ul class='dropdown'>
 <li><a href="/it/cpp">C++</a></li>
 <li><a href="/it/drupal">Drupal</a></li>
 <li><a href="/it/iphone">iPhone</a></li>
@@ -33,61 +49,67 @@
 <li><a href="/it/ostatni">Ostatní</a></li>
 </ul>
 </li>
+<li class='divider'></li>
 <li><a href="/knihy">Knihy</a></li>
+<li class='divider'></li>
 <li><a href="/matematika/">Matematika</a></li>
-<li><a href="/odkazy/">Odkazy</a></li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/odkazy/">Odkazy</a>
+<ul class='dropdown'>
+<li><a href="http://vystavuj.cz">Vystavuj</a></li>
+<li><a href="http://lovcisnu.cz">Lovci snů</a></li>
+<li><a title="Kryptoměny, Bitcoin, diskuze" href="http://satoshi.nakamoto.cz">Satoshi Nakamoto</a></li>
+<li><a href="http://www.techsquat.com/">Techsquat</a></li>
+</ul>
+</li>
+<li class='divider'></li>
 <li>
 <a href="/ostatni/">Ostatní</a>
 </li>
-<li>
+<li class='divider'></li>
+<li class='has-dropdown'>
 <a href="/seberozvoj/">Seberozvoj</a>
-<ul class='links primary-inner'>
+<ul class='dropdown'>
 <li><a href="/seberozvoj/joga">Jóga</a></li>
 </ul>
 </li>
+<li class='divider'></li>
 <li><a href="/video/">Video</a></li>
 </ul>
+</section>
 </nav>
 </div>
 </header>
-<div class='content tac' id='featured'>
-<cite>
-Od audio, až po video.
-</cite>
-</div>
 
-<section class='container row wrapper' id='center'>
-<section class='content threequarter' id='content'>
+<section class='container row' id='center'>
+<section class='large-9 columns' id='content'>
 <div class='inn'><section>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/2010-02-25-kvetoslav-minarik-o-minulosti-pritomnosti-a-budoucnosti/'>Květoslav Minařík o minulosti, přítomnosti a budoucnosti</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>25.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/2010-02-25-kvetoslav-minarik-o-minulosti-pritomnosti-a-budoucnosti/">Květoslav Minařík o minulosti, přítomnosti a budoucnosti</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Pokud jsme v síti ustálených pojmů, chápeme věčnost jako neustávající běh času – beze změn v poměru k naší existenci. Jenže čas vždy znamená změny. Věčnost obsahuje minulost, přítomnost i budoucnost jakožto bezvýjimečné „teď“. Jóginové, jimž se podařilo učinit z nekonečného prostoru vnitřní obsah vědomí, proto obsáhnou minulost, přítomnost i budoucnost v jediném aktu sebeuvědomění. Znamená to prožití věčnosti, zatím co faktor času vládne tělu dále, jako by tu nového obsahu vědomí ani nebylo.</p>
 
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Seberozvoj
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/2010-02-25-cgjung-o-i-tingu/'>C.G.Jung o I-ťingu</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>25.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/2010-02-25-cgjung-o-i-tingu/">C.G.Jung o I-ťingu</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Ukázka z knihy:<br>
@@ -100,20 +122,18 @@ Překlad: Rudolf Starý</p>
 
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Seberozvoj
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/blog/2010-02-21-railsy-opet-nezklamaly/'>Railsy opět nezklamaly</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>21.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/blog/2010-02-21-railsy-opet-nezklamaly/">Railsy opět nezklamaly</a>
+</h1>
 </header>
 <section class='summary'>
       <p>Když teď převádím uživatele ze staré galerie vystavuj.cz do její nové verze, kterou píšu v Ruby on Rails, nemůžu nepochválit railsy a tím pádem i jazyk Ruby. Nebude to žádná óda, ale musím (prostě musím) napsat, jak mi railsy celou věc usnadnily...</p>
@@ -122,14 +142,12 @@ Seberozvoj
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/joga/2010-02-18-mudry-jogicka-gesta-rukou/'>Mudry - jógická gesta rukou</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>18.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/joga/2010-02-18-mudry-jogicka-gesta-rukou/">Mudry - jógická gesta rukou</a>
+</h1>
 </header>
 <section class='summary'>
 <p><strong>Mudrou rozumíme zapnutí některých svalů - či svalových skupin v určitém postavení. Toto zapnutí se přenáší do dalších částí těla, kde je možno sledovat jeho odezvu.</strong><br>
@@ -137,59 +155,53 @@ Muder je celá řada. Ve starých textech je uváděno, že každá poloha těla
 
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Joga
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/it/cpp/2010-02-15-datove-typy-vyvazeny-binarni-strom-avl-tree/'>Datové typy - Vyvážený binární strom (AVL tree)</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>15.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/it/cpp/2010-02-15-datove-typy-vyvazeny-binarni-strom-avl-tree/">Datové typy - Vyvážený binární strom (AVL tree)</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Pro různé účely jsem vytvářel různé datové typy. Některé z nich nejsou zase tak běžné, jak by se mohlo zdát. Například nerekurzivní (rekurzivní je jen jeho uvolnění) binární AVL strom. Zde je jedna jeho implementace v jazyce C.</p>
 
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Cpp
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/joga/2010-02-15-patandzaliho-system-jogy/'>Pataňdžaliho systém jógy</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>15.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/joga/2010-02-15-patandzaliho-system-jogy/">Pataňdžaliho systém jógy</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Pataňdžaliho systém jógy vznikl asi kolem roku 300 před naším letopočtem. O Patandžalim, který bývá též nazýván otcem jógy, dějiny nic bližšího nevědí a svědectví jeho života podává pouze jeho slavná Jógasútra, souhrn seřazených aforismů, podávajíc...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Joga
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/joga/2010-02-15-druhy-jogy/'>Druhy jógy</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>15.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/joga/2010-02-15-druhy-jogy/">Druhy jógy</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Jóga je každá vědomá činnost, kterou podnikáme na cestě k sebepoznání. Tato činnost může být v rovině fyzické, verbální, citové i mentální.</p>
@@ -197,20 +209,18 @@ Joga
 <p>Ham a tham (nebo také só ham) je podle jógy zvuku naše první mantra první zvuková vibrace. Je to n...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Joga
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/ostatni/2010-02-14-rozhovor-syna-s-otcem-pravdepodobne-v-usa/'>Rozhovor syna s otcem (pravděpodobně v USA)</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>14.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/ostatni/2010-02-14-rozhovor-syna-s-otcem-pravdepodobne-v-usa/">Rozhovor syna s otcem (pravděpodobně v USA)</a>
+</h1>
 </header>
 <section class='summary'>
       <p>1: Tatinku, proc jsme napadli Irak?<br>
@@ -221,20 +231,18 @@ Joga
 2: Ano. Invaze vzdycky funguji...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Ostatní
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/it/iphone/2010-02-13-orbit-ovladnete-svuj-iphone/'>Orbit - ovládněte svůj iPhone</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>13.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/it/iphone/2010-02-13-orbit-ovladnete-svuj-iphone/">Orbit - ovládněte svůj iPhone</a>
+</h1>
 </header>
 <section class='summary'>
 <div class="field field-type-filefield field-field-intropic">
@@ -246,225 +254,203 @@ Ostatní
 <p>Orbit je jednoduchá, ale zato velmi užitečná aplikace, která se bude hodit především těm, kteří mají na iPhonu hodně aplikací a mají mezi jednotlivými stránkami na Springboardu zmatek. Jeliko...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Iphone
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/it/iphone/2010-02-13-reeder-kral-rss-ctecek-pro-iphone/'>Reeder - Král RSS čteček pro iPhone</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>13.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/it/iphone/2010-02-13-reeder-kral-rss-ctecek-pro-iphone/">Reeder - Král RSS čteček pro iPhone</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Pro iPhone existuje mnoho dobrých RSS čteček. Dnes bych vám rád představil jednu s názvem Reeder.</p>
 <p>Reeder je postaven pouze na sychronizaci s Google Readerem. Z toho plyne mnoho výhod, jako například ta, že články, které přečtete v aplikaci se vám automaticky...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Iphone
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/it/linux/2010-02-13-zapomenute-heslo-roota-v-ubuntu-sudo-must-be-setuid-root/'>Zapomenuté heslo roota v Ubuntu a chyba sudo must be setuid root</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>13.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/it/linux/2010-02-13-zapomenute-heslo-roota-v-ubuntu-sudo-must-be-setuid-root/">Zapomenuté heslo roota v Ubuntu a chyba sudo must be setuid root</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Ještě jsem se ani pořádně neprobudil a už jsem musel řešit dva malé problémy s Ubuntu Linuxem. Nejdříve mně nešel spustit Virtualbox a zadávání rootovských příkazů přes <em>sudo</em> hlásilo chybu. Potom jsem narazil na to, že jsem si změnil heslo pro uživatele root, a protože jej takřka nepoužívám, nemohl jsem si na něj vzpomenout. Oboje jsem po chvíli vyřešil. Vám snad ušetřím čas, když obě víceméně triviální řešení napíšu i sem.</p>
 
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Linux
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/joga/2010-02-07-karmajoga/'>Karmajoga</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time> 7.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/joga/2010-02-07-karmajoga/">Karmajoga</a>
+</h1>
 </header>
 <section class='summary'>
 <h2>Cesta k realizaci stavů absolutna pomocí správného konání</h2>
 <p>K této realizaci ovšem nepřispívají všechny činy, ale pouze činy nesobecké; ty, které jsou vykonávány bud k poctě Boha, nebo se zřetelem na to, aby prospěly jiným bytostem. Činnost, které se...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Joga
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/joga/2010-02-07-bhaktijoga/'>Bhaktijoga</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time> 7.  2. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/joga/2010-02-07-bhaktijoga/">Bhaktijoga</a>
+</h1>
 </header>
 <section class='summary'>
 <h2>Jóga lásky a oddanosti k Bohu</h2>
 <p>Psychologický význam této jógy je v otevírání se člověka vyšším principům, které vzývá a podrobuje se jim. Tímto způsobem se doře potlačí nižší zřetele a člověk se upravuje na vyšší vjemy a prožívání, jakož i na realizaci...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Joga
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/it/iphone/2010-01-31-echofon-pro-twitter-na-iphone/'>Echofon Pro - Twitter na iPhone</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>31.  1. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/it/iphone/2010-01-31-echofon-pro-twitter-na-iphone/">Echofon Pro - Twitter na iPhone</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Dnes bych vám rád představil pro mě osobně jeden z nejlepší klientů pro Twitter, který je na iPhone OS dostupný. Jedná se o program s názvem Echofon Pro.</p>
 <p>Při prvním zapnutí zadáte svoje twitter jméno a heslo. Poté aplikace načte nové tweety od účt...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Iphone
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/it/iphone/2010-01-31-2do-vyborny-ukolnicek-pro-iphone/'>2Do - Výborný úkolníček pro iPhone</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>31.  1. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/it/iphone/2010-01-31-2do-vyborny-ukolnicek-pro-iphone/">2Do - Výborný úkolníček pro iPhone</a>
+</h1>
 </header>
 <section class='summary'>
 <p>2Do je úkolníček pro iPhone OS, který je momentálně vůbec nejprodávanější aplikací v kategorii Produktivita v americkém AppStore. A myslím si že právem. Co tedy 2Do všechno umí?</p>
 <p>Zapisování úkolů, ale zvládá ho na výbornou. Oproti ostatním aplikacím...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Iphone
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/2010-01-30-univerzalni-zaklad-duchovna/'>Univerzální základ duchovna</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>30.  1. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/2010-01-30-univerzalni-zaklad-duchovna/">Univerzální základ duchovna</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Chceme-li skutečně poznat jakoukoli kulturu, musíme především pochopit mentalitu jejího lidu. U existujících kultur je to obvykle velmi obtížné a v případě zaniklých kultur dokonce téměř nemožné.</p>
 <p>Příběh odhalování egyptského duchovního odkazu začín...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Seberozvoj
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/ostatni/2010-01-30-egypt-stale-plny-zahad/'>Egypt stále plný záhad</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>30.  1. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/ostatni/2010-01-30-egypt-stale-plny-zahad/">Egypt stále plný záhad</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Když se Heinrich Schliemann rozhodl, že najde Tróju podle Homérovy básně Ilias, setkal se jen s útrpným úsměvem: Jaký to nesmysl hledat smyšlené město podle literárního díla?! Přesto ji nakonec s Iliadou v ruce objevil… Ani zkušenost, že stará svědectv...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Ostatní
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/2010-01-30-proc-je-dulezita-ocista-organismu/'>Proč je důležitá očista organismu?</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>30.  1. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/2010-01-30-proc-je-dulezita-ocista-organismu/">Proč je důležitá očista organismu?</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Lékaři klasické medicíny se nedívají na pacienta jako na celistvý organismus, ale jako na lokální onemocnění. Proto řada lidí užívá velké množství léků v dobré víře, že jim lékaři jistě doporučili to nejlepší, co může být. Po nějakém čase však zjistí, že příznaky původního onemocnění sice drží díky těmto lékům jaksi pod »kontrolou«, ale běda, kdyby je vysadili.</p>
 
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Seberozvoj
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/2010-01-30-hadi-sila-ve-starem-egypte/'>Hadí síla ve starém Egyptě</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>30.  1. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/2010-01-30-hadi-sila-ve-starem-egypte/">Hadí síla ve starém Egyptě</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Je všeobecně známo, že hadí síla (hadí síly) byla známa v Indii a Tibetu, a ti, kdo se domnívali, že je to pouhý výplod lidské fantazie, ji často na tyto země také omezovali. Hadí síla je ovšem skutečnost a tvoří základ energetického systému všech...</p>
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Seberozvoj
 </span>
 </footer>
 </article>
 <article class='inlist' style='display: block'>
-<header><hgroup>
-<h2>
-<a href='/seberozvoj/2010-01-29-technika-leceni-ho-oponopono/'>Technika léčení - Ho´oponopono</a>
-</h2>
-<h2 class='subheader'>
+<header><h1>
+<small>
 <time>29.  1. 2010</time>
-</h2>
-</hgroup>
+</small>
+<a href="/seberozvoj/2010-01-29-technika-leceni-ho-oponopono/">Technika léčení - Ho´oponopono</a>
+</h1>
 </header>
 <section class='summary'>
 <p>Zajímavou a velmi jednoduchou transformační a léčebnou metodou je technika s názvem <strong>Ho´oponopono</strong>.</p>
 
 </section>
 <footer>
-<span class='label label-red'>
+<span class='label secondary radius'>
 Seberozvoj
 </span>
 </footer>
@@ -474,7 +460,7 @@ Seberozvoj
 <a href="/strana-2/">‹ Předchozí strana</a>
 </div>
 <div class='page-number'>
-<span class='label color-red'>
+<span class='color-red'>
 3 / 8
 </span>
 </div>
@@ -485,31 +471,34 @@ Seberozvoj
 </section>
 </div>
 </section>
-<aside class='wrapper quarter' id='sidebar-right'>
-<div class='inn'></div>
+<aside class='large-3 columns' id='sidebar-right'>
+<div class='inn'><div class='content' id='sitename'>
+<h1>
+<a href='/'>Fanda Internetu</a>
+</h1>
+</div>
+
+</div>
 </aside>
 </section>
-<footer class='row wrapper' id='footer'>
-<section class='half taj'>
-<h3>O stránkách a o mně</h3>
-Internet je podle mě médium, které bude vždy o kus předemnou. Ovšem vždycky na tom budou někteří ještě hůř než já a těm jsou stránky určeny především.
-<br>
-Stránky jsou na Internetu od roku 2008. Zažily hodně změn a byly častokrát opuštěny. Zásadní změna přišla v roce 2014, kdy jsem provedl redesign a sloučil všechny tématické větve do hlavní stránky.
-<br>
-Já jsem fanda, moravský <a href="http://programatornavolnenoze.cz">programátor na volné noze</a>.
+<footer class='row' id='footer'>
+<section class='tac large-2 columns'>
+<h4>Analytika webu</h4>
+<a href="http://www.toplist.cz/"><script language="JavaScript" type="text/javascript"><!--document.write('<img src="http://toplist.cz/count.asp?id=1626242&logo=bc&t='+escape(document.title)+'" width="88" height="120" border=0 alt="TOPlist" />');  //--></script><noscript><img src="http://toplist.cz/count.asp?id=1626242&logo=bc" border="0" alt="TOPlist" width="88" height="120" /></noscript></a>
 </section>
-<section class='quarter tac'>
+<section class='tac large-4 columns'></section>
+<section class='tac large-3 columns'>
 <br>
-Licence na obsah:
+Licence:
 <img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" />
 <br>
 <a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
 <br>
-<br>
-<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
+<pre>pull request
+pro článek sem</pre>
 </section>
-<section class='quarter'>
-pra
+<section class='large-3 columns'>
+<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
 </section>
 </footer>
 
