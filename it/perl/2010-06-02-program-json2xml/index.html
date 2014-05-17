@@ -149,13 +149,13 @@ Posledním modulem je IO::File, ale o něm se rozepisovat nebudu, protože je po
 
 <span class="c1"># available options of this program</span>
 <span class="k">my</span> <span class="nv">$n</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="c1"># not to generate XML header</span>
-<span class="k">my</span> <span class="nv">$r</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">;</span> <span class="c1"># name of the root element to wrap result</span>
+<span class="k">my</span> <span class="nv">$r</span><span class="o">=</span><span class="s">''</span><span class="p">;</span> <span class="c1"># name of the root element to wrap result</span>
 <span class="k">my</span> <span class="nv">$s</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="c1"># string transform</span>
 <span class="k">my</span> <span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="c1"># integer transform</span>
 <span class="k">my</span> <span class="nv">$l</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="c1"># literals transform</span>
 <span class="k">my</span> <span class="nv">$e</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="c1"># root array recovery</span>
 
-<span class="k">my</span> <span class="nv">$infile</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">;</span> <span class="k">my</span> <span class="nv">$outfile</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">;</span> <span class="c1"># input and output filenames</span>
+<span class="k">my</span> <span class="nv">$infile</span> <span class="o">=</span> <span class="s">''</span><span class="p">;</span> <span class="k">my</span> <span class="nv">$outfile</span> <span class="o">=</span> <span class="s">''</span><span class="p">;</span> <span class="c1"># input and output filenames</span>
 
 <span class="c1">#########################################################################</span>
 <span class="c1"># start</span>
@@ -169,7 +169,7 @@ Posledním modulem je IO::File, ale o něm se rozepisovat nebudu, protože je po
 <span class="nb">local</span> <span class="vg">$/</span><span class="o">=</span><span class="nb">undef</span><span class="p">;</span> <span class="c1"># unset $/ for whole file read at once</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="nv">$infile</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># reading from file</span>
-    <span class="nb">open</span> <span class="nv">JSFILE</span><span class="p">,</span> <span class="s">&quot;&lt;&quot;</span><span class="p">,</span> <span class="nv">$infile</span> <span class="ow">or</span> <span class="nb">die</span> <span class="nv">$infile</span><span class="o">.</span><span class="s">&#39;: problem with file!&#39;</span><span class="p">;</span>
+    <span class="nb">open</span> <span class="nv">JSFILE</span><span class="p">,</span> <span class="s">&quot;&lt;&quot;</span><span class="p">,</span> <span class="nv">$infile</span> <span class="ow">or</span> <span class="nb">die</span> <span class="nv">$infile</span><span class="o">.</span><span class="s">': problem with file!'</span><span class="p">;</span>
     <span class="nv">$jshash</span> <span class="o">=</span> <span class="nn">JSON::</span><span class="nv">XS</span><span class="o">-&gt;</span><span class="k">new</span><span class="o">-&gt;</span><span class="nv">utf8</span><span class="o">-&gt;</span><span class="nv">decode</span><span class="p">(</span><span class="sr">&lt;JSFILE&gt;</span><span class="p">);</span> <span class="c1"># json parsing</span>
     <span class="nb">close</span> <span class="nv">JSFILE</span><span class="p">;</span>
 <span class="p">}</span>
@@ -177,7 +177,7 @@ Posledním modulem je IO::File, ale o něm se rozepisovat nebudu, protože je po
   <span class="nv">$jshash</span> <span class="o">=</span> <span class="nn">JSON::</span><span class="nv">XS</span><span class="o">-&gt;</span><span class="k">new</span><span class="o">-&gt;</span><span class="nv">utf8</span><span class="o">-&gt;</span><span class="nv">decode</span><span class="p">(</span><span class="sr">&lt;STDIN&gt;</span><span class="p">);</span> <span class="c1"># json parsing</span>
 <span class="p">}</span>
 <span class="c1"># explicit check of input JSON and options</span>
-<span class="nb">die</span><span class="p">(</span><span class="s">&quot;Invalid JSON input\n&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$jshash</span> <span class="ow">eq</span> <span class="s">&#39;ARRAY&#39;</span> <span class="ow">and</span> <span class="o">!</span><span class="p">(</span><span class="nv">$r</span> <span class="ow">and</span> <span class="nv">$e</span><span class="p">));</span>
+<span class="nb">die</span><span class="p">(</span><span class="s">&quot;Invalid JSON input\n&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$jshash</span> <span class="ow">eq</span> <span class="s">'ARRAY'</span> <span class="ow">and</span> <span class="o">!</span><span class="p">(</span><span class="nv">$r</span> <span class="ow">and</span> <span class="nv">$e</span><span class="p">));</span>
 
 <span class="c1"># set output handler</span>
 <span class="k">my</span> <span class="nv">$output</span> <span class="o">=</span> <span class="nv">$outfile</span> <span class="p">?</span> <span class="k">new</span> <span class="nn">IO::</span><span class="nv">File</span><span class="p">(</span><span class="s">&quot;&gt;$outfile&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="sr">&lt;STDOUT&gt;</span><span class="p">;</span>
@@ -203,31 +203,31 @@ Posledním modulem je IO::File, ale o něm se rozepisovat nebudu, protože je po
 <span class="c1"># subroutine for transforming JSON::XS hash into XML text</span>
 <span class="k">sub </span><span class="nf">json2xml</span> <span class="p">{</span>
   <span class="k">my</span> <span class="p">(</span><span class="nv">$jr</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$jr</span> <span class="ow">eq</span> <span class="s">&#39;ARRAY&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">startTag</span><span class="p">(</span><span class="s">&#39;array&#39;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$jr</span> <span class="ow">eq</span> <span class="s">'ARRAY'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">startTag</span><span class="p">(</span><span class="s">'array'</span><span class="p">);</span>
       <span class="k">foreach</span> <span class="p">(</span><span class="nv">@$jr</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># loop items in array</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$_</span> <span class="ow">eq</span> <span class="s">&#39;&#39;</span> <span class="ow">or</span> <span class="nb">ref</span> <span class="nv">$_</span> <span class="ow">eq</span> <span class="s">&#39;JSON::XS::Boolean&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># value</span>
-          <span class="nv">value2xml</span><span class="p">(</span><span class="s">&#39;item&#39;</span><span class="p">,</span> <span class="nv">$_</span><span class="p">);</span> <span class="c1"># use &#39;item&#39; as a key</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$_</span> <span class="ow">eq</span> <span class="s">''</span> <span class="ow">or</span> <span class="nb">ref</span> <span class="nv">$_</span> <span class="ow">eq</span> <span class="s">'JSON::XS::Boolean'</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># value</span>
+          <span class="nv">value2xml</span><span class="p">(</span><span class="s">'item'</span><span class="p">,</span> <span class="nv">$_</span><span class="p">);</span> <span class="c1"># use 'item' as a key</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span> <span class="c1"># reference</span>
-          <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">startTag</span><span class="p">(</span><span class="s">&#39;item&#39;</span><span class="p">);</span>
+          <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">startTag</span><span class="p">(</span><span class="s">'item'</span><span class="p">);</span>
           <span class="nv">json2xml</span><span class="p">(</span><span class="nv">$_</span><span class="p">);</span> <span class="c1"># recursive call for each item</span>
-          <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">endTag</span><span class="p">(</span><span class="s">&#39;item&#39;</span><span class="p">);</span>
+          <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">endTag</span><span class="p">(</span><span class="s">'item'</span><span class="p">);</span>
         <span class="p">}</span>
       <span class="p">}</span>
-      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">endTag</span><span class="p">(</span><span class="s">&#39;array&#39;</span><span class="p">);</span>
+      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">endTag</span><span class="p">(</span><span class="s">'array'</span><span class="p">);</span>
     <span class="k">return</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="c1">#value2xml(&#39;item&#39;, $jr) if (ref $jr eq &#39;&#39;);</span>
+  <span class="c1">#value2xml('item', $jr) if (ref $jr eq '');</span>
   <span class="k">while</span> <span class="p">(</span> <span class="k">my</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="o">=</span> <span class="nb">each</span> <span class="p">(</span><span class="nv">%$jr</span><span class="p">)</span> <span class="p">)</span>
   <span class="p">{</span> <span class="c1"># main loop of writing XML</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$value</span> <span class="ow">eq</span> <span class="s">&#39;HASH&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$value</span> <span class="ow">eq</span> <span class="s">'HASH'</span><span class="p">)</span>
     <span class="p">{</span> <span class="c1"># HASH</span>
       <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">startTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
       <span class="nv">json2xml</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span> <span class="c1"># recursive call for this hash</span>
       <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">endTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="k">elsif</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$value</span> <span class="ow">eq</span> <span class="s">&#39;ARRAY&#39;</span><span class="p">)</span>
+    <span class="k">elsif</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$value</span> <span class="ow">eq</span> <span class="s">'ARRAY'</span><span class="p">)</span>
     <span class="p">{</span> <span class="c1"># ARRAY</span>
       <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">startTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
       <span class="nv">json2xml</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span> <span class="c1"># process it at the begin of next call</span>
@@ -246,31 +246,31 @@ Posledním modulem je IO::File, ale o něm se rozepisovat nebudu, protože je po
 <span class="k">sub </span><span class="nf">value2xml</span> <span class="p">{</span>
   <span class="k">my</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
   <span class="c1"># BOOLEAN LITERAL</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$value</span> <span class="ow">eq</span> <span class="s">&#39;JSON::XS::Boolean&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">ref</span> <span class="nv">$value</span> <span class="ow">eq</span> <span class="s">'JSON::XS::Boolean'</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">unless</span> <span class="p">(</span><span class="nv">$l</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># make attribute</span>
-      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span><span class="s">&#39;value&#39;</span> <span class="o">=&gt;</span> <span class="nv">$value</span> <span class="p">?</span> <span class="s">&#39;true&#39;</span><span class="p">:</span><span class="s">&#39;false&#39;</span><span class="p">);</span>
+      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span><span class="s">'value'</span> <span class="o">=&gt;</span> <span class="nv">$value</span> <span class="p">?</span> <span class="s">'true'</span><span class="p">:</span><span class="s">'false'</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">else</span> <span class="p">{</span> <span class="c1"># make element</span>
       <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">startTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
-      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="nv">$value</span> <span class="p">?</span> <span class="s">&#39;true&#39;</span><span class="p">:</span><span class="s">&#39;false&#39;</span><span class="p">);</span>
+      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="nv">$value</span> <span class="p">?</span> <span class="s">'true'</span><span class="p">:</span><span class="s">'false'</span><span class="p">);</span>
       <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">endTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">}</span>
   <span class="c1"># NULL</span>
   <span class="k">elsif</span> <span class="p">(</span><span class="o">!</span> <span class="nb">defined</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">unless</span> <span class="p">(</span><span class="nv">$l</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># make attribute</span>
-      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="s">&#39;value&#39;</span> <span class="o">=&gt;</span> <span class="nv">$value</span> <span class="p">?</span> <span class="nv">$value</span> <span class="p">:</span> <span class="s">&#39;null&#39;</span><span class="p">);</span>
+      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="s">'value'</span> <span class="o">=&gt;</span> <span class="nv">$value</span> <span class="p">?</span> <span class="nv">$value</span> <span class="p">:</span> <span class="s">'null'</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">else</span> <span class="p">{</span> <span class="c1"># make element</span>
       <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">startTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
-      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="s">&#39;null&#39;</span><span class="p">);</span>
+      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="s">'null'</span><span class="p">);</span>
       <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">endTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">}</span>
   <span class="c1"># STRING or NUMERIC value</span>
   <span class="k">else</span> <span class="p">{</span>
     <span class="k">my</span> <span class="nv">$novalue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">Dumper</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">=~</span> <span class="sr">/^.*= &#39;.*&#39;.*/</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">Dumper</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">=~</span> <span class="sr">/^.*= '.*'.*/</span>
     <span class="ow">or</span>  <span class="nv">Dumper</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">=~</span> <span class="sr">/^.*= &quot;.*&quot;.*/</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># true if string</span>
       <span class="nv">$novalue</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="nv">$s</span><span class="p">;</span>
     <span class="p">}</span>
@@ -278,7 +278,7 @@ Posledním modulem je IO::File, ale o něm se rozepisovat nebudu, protože je po
       <span class="nv">$novalue</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="nv">$i</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">unless</span> <span class="p">(</span><span class="nv">$novalue</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># make attribute</span>
-      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span><span class="s">&#39;value&#39;</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">);</span>
+      <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">emptyTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span><span class="s">'value'</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">else</span> <span class="p">{</span> <span class="c1"># make element</span>
       <span class="nv">$writer</span><span class="o">-&gt;</span><span class="nv">startTag</span><span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
@@ -291,7 +291,7 @@ Posledním modulem je IO::File, ale o něm se rozepisovat nebudu, protože je po
 <span class="c1">##########################################################################</span>
 <span class="c1"># parsing of program arguments subroutine</span>
 <span class="k">sub </span><span class="nf">parseOpts</span> <span class="p">{</span>
-  <span class="k">my</span> <span class="nv">$astr</span> <span class="o">=</span> <span class="nb">join</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span><span class="nv">@_</span><span class="p">);</span> <span class="c1"># join all arguments into one string</span>
+  <span class="k">my</span> <span class="nv">$astr</span> <span class="o">=</span> <span class="nb">join</span><span class="p">(</span><span class="s">' '</span><span class="p">,</span><span class="nv">@_</span><span class="p">);</span> <span class="c1"># join all arguments into one string</span>
   <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$astr</span> <span class="o">=~</span> <span class="sr">/^\s*$/</span><span class="p">);</span> <span class="c1"># ERROR - no arguments</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$astr</span> <span class="o">=~</span> <span class="sr">s/--help//</span><span class="p">)</span> <span class="p">{</span>
     <span class="nb">die</span><span class="p">(</span><span class="s">&quot;--help must be only given argument\n&quot;</span><span class="p">)</span> <span class="k">unless</span> <span class="p">(</span><span class="nv">$astr</span> <span class="o">=~</span> <span class="sr">/^\s*$/</span><span class="p">);</span>

@@ -113,7 +113,7 @@ Helper pluralize pro češtinu
   <span class="k">module</span> <span class="nn">Helpers</span>
     <span class="k">module</span> <span class="nn">TextHelper</span>
       <span class="k">def </span><span class="nf">pluralize</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">singular</span><span class="p">,</span> <span class="n">plural</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">even_more</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
-          <span class="s2">&quot;</span><span class="si">#{</span><span class="n">count</span> <span class="o">||</span> <span class="mi">0</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">||</span> <span class="n">count</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span>
+          <span class="s2">&quot;</span><span class="si">#{</span><span class="n">count</span> <span class="o">||</span> <span class="mi">0</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">||</span> <span class="n">count</span> <span class="o">==</span> <span class="s1">'1'</span>
            <span class="n">singular</span>
          <span class="k">elsif</span> <span class="n">plural</span>
            <span class="k">if</span> <span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="o">]</span><span class="nf">.include?</span><span class="p">(</span><span class="n">count</span><span class="nf">.to_i</span><span class="p">)</span>
@@ -134,10 +134,10 @@ Helper pluralize pro češtinu
 <span class="k">end</span>
 </pre>
 <p>Metoda se pak volá podobně jako její anglický protějšek a funguje pro čísla i řetězce číslic.</p>
-<pre class="highlight ruby"><span class="n">pluralize</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;kotě&#39;</span><span class="p">,</span> <span class="s1">&#39;koťata&#39;</span><span class="p">,</span> <span class="s1">&#39;koťat&#39;</span><span class="p">)</span>
-<span class="n">pluralize</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;kotě&#39;</span><span class="p">,</span> <span class="s1">&#39;koťata&#39;</span><span class="p">,</span> <span class="s1">&#39;koťat&#39;</span><span class="p">)</span>
-<span class="n">pluralize</span><span class="p">(</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;kotě&#39;</span><span class="p">,</span> <span class="s1">&#39;koťata&#39;</span><span class="p">,</span> <span class="s1">&#39;koťat&#39;</span><span class="p">)</span>
-<span class="n">pluralize</span><span class="p">(</span><span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="s1">&#39;kotě&#39;</span><span class="p">,</span> <span class="s1">&#39;koťata&#39;</span><span class="p">,</span> <span class="s1">&#39;koťat&#39;</span><span class="p">)</span>
+<pre class="highlight ruby"><span class="n">pluralize</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'kotě'</span><span class="p">,</span> <span class="s1">'koťata'</span><span class="p">,</span> <span class="s1">'koťat'</span><span class="p">)</span>
+<span class="n">pluralize</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'kotě'</span><span class="p">,</span> <span class="s1">'koťata'</span><span class="p">,</span> <span class="s1">'koťat'</span><span class="p">)</span>
+<span class="n">pluralize</span><span class="p">(</span><span class="s1">'2'</span><span class="p">,</span> <span class="s1">'kotě'</span><span class="p">,</span> <span class="s1">'koťata'</span><span class="p">,</span> <span class="s1">'koťat'</span><span class="p">)</span>
+<span class="n">pluralize</span><span class="p">(</span><span class="s1">'5'</span><span class="p">,</span> <span class="s1">'kotě'</span><span class="p">,</span> <span class="s1">'koťata'</span><span class="p">,</span> <span class="s1">'koťat'</span><span class="p">)</span>
 </pre>
 <footer></footer>
 </article>

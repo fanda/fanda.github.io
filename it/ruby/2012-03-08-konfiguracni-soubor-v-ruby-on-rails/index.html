@@ -98,57 +98,57 @@ Konfigurační soubor v Ruby on Rails
 
 <p>Já si vytvářím konfigurační soubor <em>config/config.yml</em> ve formátu YAML, kde mám konstanty navíc rozděleny na vývojové a produkční prostředí. Soubor má následující strukturu.</p>
 <pre class="highlight ruby"><span class="ss">development:
-  locales: </span><span class="o">[</span><span class="s1">&#39;cz&#39;</span><span class="o">]</span>
-  <span class="ss">currency: </span><span class="s1">&#39;Kč&#39;</span>
-  <span class="ss">long_title: </span><span class="s1">&#39;Eshop long title&#39;</span>
+  locales: </span><span class="o">[</span><span class="s1">'cz'</span><span class="o">]</span>
+  <span class="ss">currency: </span><span class="s1">'Kč'</span>
+  <span class="ss">long_title: </span><span class="s1">'Eshop long title'</span>
   <span class="ss">short_title: </span><span class="no">Eshop</span> <span class="n">short</span>
   <span class="ss">ga_id: </span><span class="n">xxx</span>
 <span class="ss">production:
-  locales: </span><span class="o">[</span><span class="s1">&#39;cz&#39;</span><span class="o">]</span>
-  <span class="ss">currency: </span><span class="s1">&#39;Kč&#39;</span>
-  <span class="ss">long_title: </span><span class="s1">&#39;Eshop long title&#39;</span>
+  locales: </span><span class="o">[</span><span class="s1">'cz'</span><span class="o">]</span>
+  <span class="ss">currency: </span><span class="s1">'Kč'</span>
+  <span class="ss">long_title: </span><span class="s1">'Eshop long title'</span>
   <span class="ss">short_title: </span><span class="no">Eshop</span> <span class="n">short</span>
   <span class="ss">ga_id: </span><span class="n">xxx</span>
 </pre>
 <p>Konfigurační soubor pak do Ruby on Rails aplikace načtu při jejím startu pomocí iniciačního souboru <em>config/initializers/app_config.rb</em>, ve kterém se vytvoří asociativní pole typu <em>OpenStruct</em> obsahující konfigurací, k níž pak přistupuji jakobych volal funkce třídy. Například <strong>AppConfig.currency</strong> (=&gt; &lsquo;Kč&rsquo;). Všimněte si, že nemusím zadávat, zda chci hodnoty pro vývojové nebo produkční prostředí.</p>
 <pre class="highlight ruby"><span class="c1"># Load application configuration</span>
-<span class="nb">require</span> <span class="s1">&#39;ostruct&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;yaml&#39;</span>
+<span class="nb">require</span> <span class="s1">'ostruct'</span>
+<span class="nb">require</span> <span class="s1">'yaml'</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="no">YAML</span><span class="nf">.load_file</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="nf">.root</span><span class="si">}</span><span class="s2">/config/config.yml&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="p">{}</span>
-<span class="n">app_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s1">&#39;common&#39;</span><span class="o">]</span> <span class="o">||</span> <span class="p">{}</span>
+<span class="n">app_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s1">'common'</span><span class="o">]</span> <span class="o">||</span> <span class="p">{}</span>
 <span class="n">app_config</span><span class="nf">.update</span><span class="p">(</span><span class="n">config</span><span class="o">[</span><span class="no">Rails</span><span class="nf">.env</span><span class="o">]</span> <span class="o">||</span> <span class="p">{})</span>
 <span class="no">AppConfig</span> <span class="o">=</span> <span class="no">OpenStruct</span><span class="nf">.new</span><span class="p">(</span><span class="n">app_config</span><span class="p">)</span>
 </pre>
 <p>Výše uvedený kód (který volně koluje po Ruby on Rails fórech) má ovšem i své nedokonalosti. Pokud chci konfigurační soubor s vnořenými hodnotami, viz ukázka, nemohu získat hodnotu voláním <strong>AppConfig.picture_style.large</strong>, ale musím použít <strong>AppConfig.picture_style[&lsquo;large&rsquo;]</strong>. To se mi ale nelíbí.</p>
 <pre class="highlight ruby"><span class="ss">development:
-  locales: </span><span class="o">[</span><span class="s1">&#39;cz&#39;</span><span class="o">]</span>
-  <span class="ss">currency: </span><span class="s1">&#39;Kč&#39;</span>
-  <span class="ss">long_title: </span><span class="s1">&#39;Eshop long title&#39;</span>
+  locales: </span><span class="o">[</span><span class="s1">'cz'</span><span class="o">]</span>
+  <span class="ss">currency: </span><span class="s1">'Kč'</span>
+  <span class="ss">long_title: </span><span class="s1">'Eshop long title'</span>
   <span class="ss">short_title: </span><span class="no">Eshop</span> <span class="n">short</span>
   <span class="ss">ga_id: </span><span class="n">xxx</span>
   <span class="ss">picture_style:
-    square: </span><span class="s1">&#39;150x150#&#39;</span>
-    <span class="ss">large: </span><span class="s1">&#39;280x280&gt;&#39;</span>
-    <span class="ss">original: </span><span class="s1">&#39;840x840&gt;&#39;</span>
+    square: </span><span class="s1">'150x150#'</span>
+    <span class="ss">large: </span><span class="s1">'280x280&gt;'</span>
+    <span class="ss">original: </span><span class="s1">'840x840&gt;'</span>
 <span class="ss">production:
-  locales: </span><span class="o">[</span><span class="s1">&#39;cz&#39;</span><span class="o">]</span>
-  <span class="ss">currency: </span><span class="s1">&#39;Kč&#39;</span>
-  <span class="ss">long_title: </span><span class="s1">&#39;Eshop long title&#39;</span>
+  locales: </span><span class="o">[</span><span class="s1">'cz'</span><span class="o">]</span>
+  <span class="ss">currency: </span><span class="s1">'Kč'</span>
+  <span class="ss">long_title: </span><span class="s1">'Eshop long title'</span>
   <span class="ss">short_title: </span><span class="no">Eshop</span> <span class="n">short</span>
   <span class="ss">ga_id: </span><span class="n">xxx</span>
   <span class="ss">picture_style:
-    square: </span><span class="s1">&#39;150x150#&#39;</span>
-    <span class="ss">large: </span><span class="s1">&#39;280x280&gt;&#39;</span>
-    <span class="ss">original: </span><span class="s1">&#39;840x840&gt;&#39;</span>
+    square: </span><span class="s1">'150x150#'</span>
+    <span class="ss">large: </span><span class="s1">'280x280&gt;'</span>
+    <span class="ss">original: </span><span class="s1">'840x840&gt;'</span>
 </pre>
 <p>Aby se snadněji získávaly vnořené konfigurační hodnoty, musí se <em>OpenStruct</em> vytvořit v každém zanoření zvlášť. Iniciační soubor jsem si k tomu musel trochu přeprogramovat. Jeho základ nyní tvoří rekurzivní anonymní funkce, která projde konfigurační soubor a všude, kde je to možné, vytvoří asociativní pole typu <em>OpenStruct</em>.</p>
 <pre class="highlight ruby"><span class="c1"># Load application configuration</span>
-<span class="nb">require</span> <span class="s1">&#39;ostruct&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;yaml&#39;</span>
+<span class="nb">require</span> <span class="s1">'ostruct'</span>
+<span class="nb">require</span> <span class="s1">'yaml'</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="no">YAML</span><span class="nf">.load_file</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="nf">.root</span><span class="si">}</span><span class="s2">/config/config.yml&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="p">{}</span>
-<span class="n">app_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s1">&#39;common&#39;</span><span class="o">]</span> <span class="o">||</span> <span class="p">{}</span>
+<span class="n">app_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s1">'common'</span><span class="o">]</span> <span class="o">||</span> <span class="p">{}</span>
 <span class="n">app_config</span><span class="nf">.update</span><span class="p">(</span><span class="n">config</span><span class="o">[</span><span class="no">Rails</span><span class="nf">.env</span><span class="o">]</span> <span class="o">||</span> <span class="p">{})</span>
 <span class="n">h2ostruct</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span> <span class="n">recurse</span><span class="p">,</span> <span class="n">object</span> <span class="o">|</span>
   <span class="k">return</span> <span class="k">case</span> <span class="n">object</span>

@@ -159,14 +159,14 @@ ruboto gen class Activity --name AwesomeActivity
 <p>Aktivity v Ruby jsou z principu velmi podobné těm v Java. Pro inspiraci a naladění si prohlížím <a href="https://github.com/ruboto/ruboto/tree/master/test/activity">testovací aktivity</a> nebo systematicky popsané <a href="https://github.com/ruboto/ruboto/wiki/Tutorials-and-examples">příklady použití</a>.</p>
 
 <p>Moje první funkční aktivita, která pomocí knihovny <code>net/http</code> stahovala JSON ze serveru, vypadala podobně jako ta následující.</p>
-<pre class="highlight ruby"><span class="nb">require</span> <span class="s1">&#39;ruboto/widget&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;ruboto/util/toast&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;ruboto/util/stack&#39;</span>
+<pre class="highlight ruby"><span class="nb">require</span> <span class="s1">'ruboto/widget'</span>
+<span class="nb">require</span> <span class="s1">'ruboto/util/toast'</span>
+<span class="nb">require</span> <span class="s1">'ruboto/util/stack'</span>
 
 <span class="n">with_large_stack</span><span class="p">(</span><span class="ss">:size</span> <span class="o">=&gt;</span> <span class="mi">256</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nb">require</span> <span class="s1">&#39;ostruct&#39;</span>
-  <span class="nb">require</span> <span class="s1">&#39;net/http&#39;</span>
-  <span class="nb">require</span> <span class="s1">&#39;json/pure&#39;</span>
+  <span class="nb">require</span> <span class="s1">'ostruct'</span>
+  <span class="nb">require</span> <span class="s1">'net/http'</span>
+  <span class="nb">require</span> <span class="s1">'json/pure'</span>
 <span class="p">}</span>
 
 <span class="c1">#import &quot;android.net.Uri&quot;</span>
@@ -178,15 +178,15 @@ ruboto gen class Activity --name AwesomeActivity
   <span class="kp">include</span> <span class="no">Net</span>
 
   <span class="k">def </span><span class="nf">on_create</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
-    <span class="n">setTitle</span> <span class="s1">&#39;Rubyn MT&#39;</span>
+    <span class="n">setTitle</span> <span class="s1">'Rubyn MT'</span>
     <span class="vi">@srv</span> <span class="o">=</span> <span class="no">HTTP</span><span class="nf">.new</span><span class="p">(</span><span class="s2">&quot;example.net&quot;</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
     <span class="n">response</span> <span class="o">=</span> <span class="vi">@srv</span><span class="nf">.request</span><span class="p">(</span> <span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="nf">.new</span><span class="p">(</span> <span class="s2">&quot;/my.json&quot;</span> <span class="p">)</span> <span class="p">)</span>
     <span class="n">raw</span> <span class="o">=</span> <span class="n">response</span><span class="nf">.body.to_s</span>
 
     <span class="nb">self</span><span class="nf">.content_view</span> <span class="o">=</span> <span class="n">linear_layout</span> <span class="ss">:orientation</span> <span class="o">=&gt;</span> <span class="ss">:vertical</span> <span class="k">do</span>
-      <span class="n">text_view</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="s1">&#39;RAW&#39;</span>
+      <span class="n">text_view</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="s1">'RAW'</span>
       <span class="n">text_view</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="n">raw</span><span class="nf">.to_s</span>
-      <span class="n">text_view</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="s1">&#39;RUBY&#39;</span>
+      <span class="n">text_view</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="s1">'RUBY'</span>
       <span class="n">text_view</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="n">json2ruby</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="nf">.inspect</span>
     <span class="k">end</span>
   <span class="k">end</span>
@@ -211,24 +211,24 @@ ruboto gen class Activity --name AwesomeActivity
   <span class="c1"># ...</span>
   <span class="k">def </span><span class="nf">on_create</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
     <span class="nb">self</span><span class="nf">.content_view</span> <span class="o">=</span> <span class="n">linear_layout</span> <span class="ss">:orientation</span> <span class="o">=&gt;</span> <span class="ss">:vertical</span> <span class="k">do</span>
-      <span class="n">button</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="s1">&#39;Bum&#39;</span><span class="p">,</span>
+      <span class="n">button</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="s1">'Bum'</span><span class="p">,</span>
         <span class="ss">:on_click_listener</span> <span class="o">=&gt;</span> <span class="nb">proc</span><span class="p">{</span><span class="n">show_second_activity</span><span class="p">}</span>
     <span class="k">end</span>
   <span class="k">end</span>
   <span class="k">def </span><span class="nf">show_second_activity</span>
     <span class="c1"># access Android SDK without import</span>
     <span class="n">bundle</span> <span class="o">=</span> <span class="n">android</span><span class="nf">.os</span><span class="o">.</span><span class="no">Bundle</span><span class="nf">.new</span>
-    <span class="n">bundle</span><span class="nf">.put_string</span><span class="p">(</span><span class="s1">&#39;ClassName&#39;</span><span class="p">,</span> <span class="s1">&#39;SecondActivity&#39;</span><span class="p">)</span>
+    <span class="n">bundle</span><span class="nf">.put_string</span><span class="p">(</span><span class="s1">'ClassName'</span><span class="p">,</span> <span class="s1">'SecondActivity'</span><span class="p">)</span>
     <span class="c1"># access Android SDK with import</span>
     <span class="n">i</span> <span class="o">=</span> <span class="no">Intent</span><span class="nf">.new</span> <span class="c1"># also: i = android.content.Intent.new</span>
-    <span class="n">i</span><span class="nf">.setClassName</span><span class="p">(</span><span class="vg">$package_name</span><span class="p">,</span> <span class="s1">&#39;org.ruboto.RubotoActivity&#39;</span><span class="p">)</span>
-    <span class="n">i</span><span class="nf">.putExtra</span><span class="p">(</span><span class="s1">&#39;Ruboto Config&#39;</span><span class="p">,</span> <span class="n">bundle</span><span class="p">)</span>
-    <span class="n">i</span><span class="nf">.putExtra</span><span class="p">(</span><span class="s1">&#39;My String&#39;</span><span class="p">,</span> <span class="s1">&#39;I\&#39;m Android Ruboto&#39;</span><span class="p">)</span>
+    <span class="n">i</span><span class="nf">.setClassName</span><span class="p">(</span><span class="vg">$package_name</span><span class="p">,</span> <span class="s1">'org.ruboto.RubotoActivity'</span><span class="p">)</span>
+    <span class="n">i</span><span class="nf">.putExtra</span><span class="p">(</span><span class="s1">'Ruboto Config'</span><span class="p">,</span> <span class="n">bundle</span><span class="p">)</span>
+    <span class="n">i</span><span class="nf">.putExtra</span><span class="p">(</span><span class="s1">'My String'</span><span class="p">,</span> <span class="s1">'I\'m Android Ruboto'</span><span class="p">)</span>
     <span class="n">startActivityForResult</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
   <span class="k">end</span>
   <span class="k">def </span><span class="nf">on_activity_result</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
     <span class="k">super</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-    <span class="n">new_content</span> <span class="o">=</span> <span class="n">i</span><span class="nf">.getStringExtra</span><span class="p">(</span><span class="s1">&#39;Result String&#39;</span><span class="p">)</span>
+    <span class="n">new_content</span> <span class="o">=</span> <span class="n">i</span><span class="nf">.getStringExtra</span><span class="p">(</span><span class="s1">'Result String'</span><span class="p">)</span>
     <span class="c1"># ...</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -237,13 +237,13 @@ ruboto gen class Activity --name AwesomeActivity
   <span class="k">def </span><span class="nf">on_create</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
     <span class="k">super</span>
     <span class="n">bundle</span> <span class="o">=</span> <span class="n">getIntent</span><span class="p">()</span><span class="nf">.getExtras</span><span class="p">()</span>
-    <span class="n">button</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="n">bundle</span><span class="nf">.getString</span><span class="p">(</span><span class="s1">&#39;My String&#39;</span><span class="p">),</span>
-        <span class="ss">:on_click_listener</span> <span class="o">=&gt;</span> <span class="nb">proc</span><span class="p">{</span><span class="n">submit</span><span class="p">(</span><span class="s1">&#39;Submit&#39;</span><span class="p">)}</span>
+    <span class="n">button</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="n">bundle</span><span class="nf">.getString</span><span class="p">(</span><span class="s1">'My String'</span><span class="p">),</span>
+        <span class="ss">:on_click_listener</span> <span class="o">=&gt;</span> <span class="nb">proc</span><span class="p">{</span><span class="n">submit</span><span class="p">(</span><span class="s1">'Submit'</span><span class="p">)}</span>
     <span class="k">end</span>
   <span class="k">end</span>
   <span class="k">def </span><span class="nf">submit</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="n">i</span> <span class="o">=</span> <span class="no">Intent</span><span class="nf">.new</span>
-    <span class="n">i</span><span class="nf">.putExtra</span><span class="p">(</span><span class="s1">&#39;Result String&#39;</span><span class="p">,</span> <span class="n">msg</span> <span class="p">)</span>
+    <span class="n">i</span><span class="nf">.putExtra</span><span class="p">(</span><span class="s1">'Result String'</span><span class="p">,</span> <span class="n">msg</span> <span class="p">)</span>
     <span class="n">setResult</span><span class="p">(</span><span class="no">RESULT_OK</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">finish</span>
   <span class="k">end</span>
