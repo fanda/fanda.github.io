@@ -80,6 +80,11 @@
 </section>
 </nav>
 </div>
+<div class='content' id='sitename'>
+<h1>
+<a href='/'>Fanda Internetu</a>
+</h1>
+</div>
 </header>
 
 <section class='container row' id='center'>
@@ -99,16 +104,16 @@ Sprockets bez Rails
 <p>Skript uložte s názvem <code>config.ru</code> a z jeho adresáře spouštějte příkazem <code>rackup</code>. Server poté naslouchá na portu 9292.
 Je potřeba mít nainstalované <strong>sprockets, rack, rack-mount</strong> a asi i <strong>sass, coffee-script</strong> a možná ještě nějaké.</p>
 <pre class="highlight shell">gem install sprockets rack rack-mount sass coffee-script
-</pre><pre class="highlight ruby"><span class="nb">require</span> <span class="s1">'sprockets'</span>
-<span class="nb">require</span> <span class="s1">'rack'</span>
-<span class="nb">require</span> <span class="s1">'rack/mount'</span>
+</pre><pre class="highlight ruby"><span class="nb">require</span> <span class="s1">&#39;sprockets&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;rack&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;rack/mount&#39;</span>
 
 <span class="n">project_root</span> <span class="o">=</span> <span class="no">File</span><span class="nf">.expand_path</span><span class="p">(</span><span class="no">File</span><span class="nf">.dirname</span><span class="p">(</span><span class="kp">__FILE__</span><span class="p">))</span>
 <span class="no">Assets</span> <span class="o">=</span> <span class="no">Sprockets</span><span class="o">::</span><span class="no">Environment</span><span class="nf">.new</span><span class="p">(</span><span class="no">File</span><span class="nf">.dirname</span><span class="p">(</span><span class="kp">__FILE__</span><span class="p">))</span>
 
-<span class="no">Assets</span><span class="nf">.append_path</span><span class="p">(</span><span class="no">File</span><span class="nf">.join</span><span class="p">(</span><span class="n">project_root</span><span class="p">,</span> <span class="s1">'assets'</span><span class="p">))</span>
-<span class="no">Assets</span><span class="nf">.append_path</span><span class="p">(</span><span class="no">File</span><span class="nf">.join</span><span class="p">(</span><span class="n">project_root</span><span class="p">,</span> <span class="s1">'assets'</span><span class="p">,</span> <span class="s1">'javascripts'</span><span class="p">))</span>
-<span class="no">Assets</span><span class="nf">.append_path</span><span class="p">(</span><span class="no">File</span><span class="nf">.join</span><span class="p">(</span><span class="n">project_root</span><span class="p">,</span> <span class="s1">'assets'</span><span class="p">,</span> <span class="s1">'stylesheets'</span><span class="p">))</span>
+<span class="no">Assets</span><span class="nf">.append_path</span><span class="p">(</span><span class="no">File</span><span class="nf">.join</span><span class="p">(</span><span class="n">project_root</span><span class="p">,</span> <span class="s1">&#39;assets&#39;</span><span class="p">))</span>
+<span class="no">Assets</span><span class="nf">.append_path</span><span class="p">(</span><span class="no">File</span><span class="nf">.join</span><span class="p">(</span><span class="n">project_root</span><span class="p">,</span> <span class="s1">&#39;assets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">))</span>
+<span class="no">Assets</span><span class="nf">.append_path</span><span class="p">(</span><span class="no">File</span><span class="nf">.join</span><span class="p">(</span><span class="n">project_root</span><span class="p">,</span> <span class="s1">&#39;assets&#39;</span><span class="p">,</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">))</span>
 
 <span class="no">Routes</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Mount</span><span class="o">::</span><span class="no">RouteSet</span><span class="nf">.new</span> <span class="k">do</span> <span class="o">|</span><span class="n">set</span><span class="o">|</span>
   <span class="n">set</span><span class="nf">.add_route</span> <span class="no">Assets</span><span class="p">,</span> <span class="ss">:path_info</span> <span class="o">=&gt;</span> <span class="sr">%r{^/assets}</span>
@@ -132,7 +137,9 @@ Je potřeba mít nainstalované <strong>sprockets, rack, rack-mount</strong> a a
 </section>
 <footer class='row' id='footer'>
 <section class='tac large-2 columns'>
-<h4>Analytika webu</h4>
+<h4>
+<small>Analytika webu</small>
+</h4>
 <a href="http://www.toplist.cz/"><script language="JavaScript" type="text/javascript"><!--document.write('<img src="http://toplist.cz/count.asp?id=1626242&logo=bc&t='+escape(document.title)+'" width="88" height="120" border=0 alt="TOPlist" />');  //--></script><noscript><img src="http://toplist.cz/count.asp?id=1626242&logo=bc" border="0" alt="TOPlist" width="88" height="120" /></noscript></a>
 </section>
 <section class='tac large-4 columns'></section>

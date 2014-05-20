@@ -80,6 +80,11 @@
 </section>
 </nav>
 </div>
+<div class='content' id='sitename'>
+<h1>
+<a href='/'>Fanda Internetu</a>
+</h1>
+</div>
 </header>
 
 <section class='container row' id='center'>
@@ -100,18 +105,18 @@ Tipy pro přehlednější kód v Ruby
 
 <p>Jako první uvádím variace na ternární operátor pro podmínku, který zná téměř každý, kdo programuje v jazycích C/C++, php, JavaScript a v mnoha dalších. Jeho použití je v Ruby následující:</p>
 <pre class="highlight ruby"><span class="k">def </span><span class="nf">jedna!</span>
-    <span class="kp">true</span> <span class="p">?</span> <span class="ss">:jedna</span> <span class="p">:</span> <span class="s1">'dvě'</span> <span class="c1"># =&gt; :jedna</span>
+    <span class="kp">true</span> <span class="p">?</span> <span class="ss">:jedna</span> <span class="p">:</span> <span class="s1">&#39;dvě&#39;</span> <span class="c1"># =&gt; :jedna</span>
 <span class="k">end</span>
 </pre>
 <p>Dle mého názoru se hodí spíše pro podmíněné přiřazení, než k podmínce o návratové hodnotě. Někteří programátoři jej nepoužívají vůbec. Sám musím uznat, že následující zápis je mnohem sebevysvětlující.</p>
 <pre class="highlight ruby"><span class="k">def </span><span class="nf">jedna_nebo_2</span><span class="p">(</span><span class="n">kolik</span><span class="p">)</span>
     <span class="k">return</span> <span class="ss">:jedna</span> <span class="k">if</span> <span class="n">kolik</span> <span class="o">==</span> <span class="mi">1</span>
-    <span class="s1">'dvě'</span>
+    <span class="s1">&#39;dvě&#39;</span>
 <span class="k">end</span>
 </pre>
 <p>Jak zapsat tuto funkci pouze na jeden řádek? Hezké je to s použitím operátoru <em>or</em> takto:</p>
 <pre class="highlight ruby"><span class="k">def </span><span class="nf">jedna_nebo_2</span><span class="p">(</span><span class="n">kolik</span><span class="p">)</span>
-    <span class="p">(</span><span class="ss">:jedna</span> <span class="k">if</span> <span class="n">kolik</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="n">or</span> <span class="s1">'dvě'</span>
+    <span class="p">(</span><span class="ss">:jedna</span> <span class="k">if</span> <span class="n">kolik</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="n">or</span> <span class="s1">&#39;dvě&#39;</span>
 <span class="k">end</span>
 </pre>
 <p>Tu nejdelší variantu na pět řádků s <em>if</em>, <em>else</em> a <em>end</em> zde uvádět nechci a myslím, že ani nemusím.</p>
@@ -119,10 +124,10 @@ Tipy pro přehlednější kód v Ruby
 <h2>Testování hodnot v objektu</h2>
 
 <p>U podmínek ještě chvíli zůstaňme. Občas má program vykonat nějakou činnost, pokud je ekvivaletní jedné z několika různých hodnot.</p>
-<pre class="highlight ruby"><span class="k">if</span> <span class="n">kolik</span> <span class="o">==</span> <span class="ss">:jedna</span> <span class="n">or</span> <span class="n">kolik</span> <span class="o">==</span> <span class="s1">'dvě'</span> <span class="n">or</span> <span class="n">kolik</span> <span class="o">==</span> <span class="s1">'tři'</span> <span class="n">or</span> <span class="n">kolik</span> <span class="o">==</span> <span class="mi">4</span> <span class="c1"># případně dále</span>
+<pre class="highlight ruby"><span class="k">if</span> <span class="n">kolik</span> <span class="o">==</span> <span class="ss">:jedna</span> <span class="n">or</span> <span class="n">kolik</span> <span class="o">==</span> <span class="s1">&#39;dvě&#39;</span> <span class="n">or</span> <span class="n">kolik</span> <span class="o">==</span> <span class="s1">&#39;tři&#39;</span> <span class="n">or</span> <span class="n">kolik</span> <span class="o">==</span> <span class="mi">4</span> <span class="c1"># případně dále</span>
 </pre>
 <p>Taková podmínka může být i na několik řádků a přehledná rozhodně není. Mnohem lepší se mi v takových případech jeví dát hodnoty do pole a zavolat jeho metodu include?.</p>
-<pre class="highlight ruby"><span class="k">if</span> <span class="o">[</span><span class="ss">:jedna</span><span class="p">,</span> <span class="s1">'dvě'</span><span class="p">,</span> <span class="s1">'tři'</span><span class="p">,</span> <span class="mi">4</span><span class="o">]</span><span class="nf">.include?</span><span class="p">(</span><span class="n">kolik</span><span class="p">)</span>
+<pre class="highlight ruby"><span class="k">if</span> <span class="o">[</span><span class="ss">:jedna</span><span class="p">,</span> <span class="s1">&#39;dvě&#39;</span><span class="p">,</span> <span class="s1">&#39;tři&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="o">]</span><span class="nf">.include?</span><span class="p">(</span><span class="n">kolik</span><span class="p">)</span>
 </pre>
 <p>Kdyby se jednalo jen o slova (řetězce), mohl by se zápis psát lépe použitím %w().</p>
 <pre class="highlight ruby"><span class="k">if</span> <span class="sx">%w(jedna dvě tři čtyři)</span><span class="nf">.include?</span><span class="p">(</span><span class="n">kolik</span><span class="p">)</span>
@@ -131,10 +136,10 @@ Tipy pro přehlednější kód v Ruby
 
 <p>Představte si, že máte následující zanořený Hash a potřebujete z něj bezpečně získat hodnoty <em>name</em> a <em>nick</em>. Uvažme, že Hash jako celek nikdy nebude nil, ale vnořený Hash info být prázdný může.</p>
 <pre class="highlight ruby"><span class="n">user</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="s1">'xxx'</span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;xxx&#39;</span><span class="p">,</span>
     <span class="ss">info: </span><span class="p">{</span>
-        <span class="nb">name</span><span class="p">:</span> <span class="s1">'pan Poctivý'</span><span class="p">,</span>
-        <span class="ss">nick: </span><span class="s1">'pp'</span>
+        <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;pan Poctivý&#39;</span><span class="p">,</span>
+        <span class="ss">nick: </span><span class="s1">&#39;pp&#39;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre>
@@ -163,7 +168,9 @@ Tipy pro přehlednější kód v Ruby
 </section>
 <footer class='row' id='footer'>
 <section class='tac large-2 columns'>
-<h4>Analytika webu</h4>
+<h4>
+<small>Analytika webu</small>
+</h4>
 <a href="http://www.toplist.cz/"><script language="JavaScript" type="text/javascript"><!--document.write('<img src="http://toplist.cz/count.asp?id=1626242&logo=bc&t='+escape(document.title)+'" width="88" height="120" border=0 alt="TOPlist" />');  //--></script><noscript><img src="http://toplist.cz/count.asp?id=1626242&logo=bc" border="0" alt="TOPlist" width="88" height="120" /></noscript></a>
 </section>
 <section class='tac large-4 columns'></section>
