@@ -401,6 +401,10 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>http://ifanda.cz/it/linux/2014-11-13-email-server-postfix-dovecot-postgresql</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
     <loc>http://ifanda.cz/it/python/2009-06-10-http-head-request-s-bonusem</loc>
     <priority>1.0</priority>
   </url>
@@ -798,6 +802,10 @@
   </url>
   <url>
     <loc>http://ifanda.cz/seberozvoj/2010-01-29-technika-leceni-ho-oponopono</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>http://ifanda.cz/seberozvoj/2015-01-05-rozvoj-osobnosti-bozi-vule</loc>
     <priority>1.0</priority>
   </url>
   <url>

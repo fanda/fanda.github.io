@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<title>E-mail server s Postfix, Dovecot a PostgreSQL</title>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
+<script>
+  window.jQuery || document.write('<script src="/a/js/l/jquery.js">\x3C/script>')
+</script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js' type='text/javascript'></script>
+<script>
+  window.Modernizr || document.write('<script src="/a/js/l/modernizr.js">\x3C/script>')
+</script>
+<script src="/a/script/l/fastclick.js" type="text/javascript"></script>
+<script src="/a/script/l/modernizr.js" type="text/javascript"></script>
+<script src="/a/script/l/jquery.cookie.js" type="text/javascript"></script>
+<script src="/a/script/l/placeholder.js" type="text/javascript"></script>
+<script src="/a/script/l/fastclick.js" type="text/javascript"></script>
+<script src="/a/script/l/foundation.custom.js" type="text/javascript"></script>
+<script src="/a/script/script.js" type="text/javascript"></script>
+<link href="/a/cs/app.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+
+<body class='it it_linux it_linux_2014-11-13-email-server-postfix-dovecot-postgresql it_linux_2014-11-13-email-server-postfix-dovecot-postgresql_index one-sidebar-right'>
+<div id='container'>
+<header id='header'>
+<div id='sitename'>
+<h1 class='wrapper'>
+<a href='/'>Fanda Internetu</a>
+</h1>
+</div>
+<div id='topmenu'>
+<nav class='wrapper top-bar' data-options='is_hover: true' data-topbar>
+<section class='top-bar-section'>
+<ul class='title-area'>
+<li class='name'></li>
+</ul>
+<ul>
+<li><a href="/audio/">Audio</a></li>
+<li class='divider'></li>
+<li><a href="/internet/">Internet</a></li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/it/">IT</a>
+<ul class='dropdown'>
+<li><a href="/it/cpp">C++</a></li>
+<li><a href="/it/drupal">Drupal</a></li>
+<li><a href="/it/iphone">iPhone</a></li>
+<li><a href="/it/linux">Linux</a></li>
+<li><a href="/it/perl">Perl</a></li>
+<li><a href="/it/python">Python</a></li>
+<li><a href="/it/ruby">Ruby</a></li>
+<li><a href="/it/ostatní">Ostatní</a></li>
+</ul>
+</li>
+<li class='divider'></li>
+<li><a href="/knihy">Knihy</a></li>
+<li class='divider'></li>
+<li><a href="/matematika/">Matematika</a></li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/odkazy/">Odkazy</a>
+<ul class='dropdown'>
+<li><a href="http://vystavuj.cz">Vystavuj</a></li>
+<li><a href="http://lovcisnu.cz">Lovci snů</a></li>
+<li><a title="Kryptoměny, Bitcoin, diskuze" href="http://satoshi.nakamoto.cz">Satoshi Nakamoto</a></li>
+<li><a href="http://www.techsquat.com/">Techsquat</a></li>
+</ul>
+</li>
+<li class='divider'></li>
+<li>
+<a href="/ostatní/">Ostatní</a>
+</li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/seberozvoj/">Seberozvoj</a>
+<ul class='dropdown'>
+<li><a href="/seberozvoj/joga">Jóga</a></li>
+</ul>
+</li>
+<li class='divider'></li>
+<li><a href="/video/">Video</a></li>
+</ul>
+</section>
+</nav>
+</div>
+</header>
+
+<section class='container row' id='center'>
+<section class='large-9 columns' id='content'>
+<div class='inn'><article style='display: block'>
+<header>
+<h1>
+<small>
+<time>13. 11. 2014</time>
+</small>
+E-mail server s Postfix, Dovecot a PostgreSQL
+</h1>
+
+</header>
+Po několika letech jsem byl znovu vystaven útrapám s nastavováním e-mailového serveru na Linuxu. Ne, že by se jednalo o nějak vyjímečně složitou záležitost, ale triviální problém to také není, a proto bych svůj postup chtěl zapsat - pro sebe i pro ostatní, kteří někdy někde budou muset nastavovat programy Postfix a Dovecot v součinosti s databází PostgreSQL.
+
+<h2>Úvod</h2>
+<p>V minulosti jsem se pokusil celý <a href="http://github.com/fanda/rmails">instalační proces</a> automatizovat, ale výsledná aplikace se nedá považovat za úspěch. Jedná se o Ruby on Rails aplikaci, která pomocí knihovny pro manipulaci s operačním systémem, spravuje nastavení, uživatele a přesměrování e-mailového serveru. Aplikace by teoreticky měla fungovat na většině linuxových distribucí, ale ty se často mění, takže vyladit a udržovat funkční instalační rutiny zabírá hodně času. Rozhodl jsem se vývoj na projektu zastavit a vyjma architektury serveru jsem jej při práci nepoužil.</p>
+<p>
+Avšak i architekturu jsem malinko změnil. Původní je popsána [zde](http://programator.pro/pages/rmails/#cooperation). Ta nová vypadá zhruba takto:
+<pre>--smtp--> [ Postfix ] --smtp--> [DSPAM] --smtp--> [ Postfix ] --lda--> [DOVECOT] ---> (virtual Mailbox)
+       |
+     DKIM</pre>
+Rozdíl spočívá v odstranění Amawis a Spamassasin; zůstává jen Dspam, který reinjektuje Postfix, a také se změnilo databázové schéma, jelikož server má být součástí většího systému, kde by mělo fungovat jediné přihlášení napříč všemy systémy, což popíšu dále v textu.
+</p>
+<h2>Postup nastavení e-mailového serveru</h2>
+Je zřejmé, že server se skládá z několika komponent, které je potřeba nainstalovat a nastavit v operačním systému. Já jsem jako OS použil Debian Wheezy, ale obecně lze postup a především konfigurační soubory použít pro jakýkoliv Linux/Unix. Postupoval byl následovný:
+<ul>
+<li><a href="#apt">Instalace komponent</a></li>
+<li><a href="#psql">Nastavení PostgreSQL</a></li>
+<li><a href="#postfix">Nastavení Postfix</a></li>
+<li><a href="#dovecot">Nastavení Dovecot</a></li>
+<li><a href="#dspam">Nastavení Dspam</a></li>
+<li><a href="#ssl">Generování kryptografických klíčů</a></li>
+<li><a href="#telnet">Testování protokolů SMTP a IMAP telnetem</a></li>
+<li><a href="#dkimspf">Nastavení DKIM a SPF</a></li>
+<li><a href="#hardening">Zabezpečení systému</a></li>
+</ul>
+Nebudu zde popisovat, jak jsem k jednotlivým konfiguracím dospěl, jen vystavím konfigurační soubory komponent a zmíním důležité věci. Informací ohledně e-mailových serverů je na Internetu dostatek, hlavně v angličtině. Nepovažuju konfiguraci za dokonalou, ale každopádně funguje a pro zajištění funkční pošty pro několik virtuálních domén docela stačí.
+<h3 id='apt'>Instalace programů na Debian</h3>
+Debian je jedna z nejrozšířenějších linových distribucí na serverech a v repozitářích má velké množství balíčků, které ovšem ve stabilním vydání nemusí být nejaktuálnější. Naštěstí všechny programy, které e-mailový server podle návrhu vyžaduje jsou v repozitářích přítomny, přestože některé (Dovecot > 2.0) v jsou jen v tzv. backports repozitářích.
+<p><a href="http://backports.debian.org/Instructions/">Přidání backports repozitářů</a> na Debian Wheezy je jednoduché:
+1. přidáme do <em>/etc/apt/sources.list</em> řádek
+<code>&#x000A;deb http://http.debian.net/debian wheezy-backports main</code>
+2. spustíme jako root příkaz: <em>apt-get update</em>.</p>
+<p>Zde ještě poznámka ohledně databáze. Pokud chcete, aby Postgre databáze byla na stejném stroji jako zbytek systému, doporučuju Vám nainstalovat nejnovější verzi, která ovšem není obsažena v repozitářích Debianu a opět musíte upravit <em>/etc/apt/sources.list</em>, abyste ji mohli nainstalovat (<a href="https://wiki.postgresql.org/wiki/Apt">podrobnosti v angličtině</a>). Já reálně používám dedikovaný databázový server, takže jsem instaloval jen PostgreSQL klienta.</p>
+<p>Nyní lze instalovat programy. Pro instalaci Postfix, Dspam a OpenDKIM jako superuživatel spusťte:
+<code>&#x000A;apt-get install build-essential postfix postfix-pgsql postfix-pcre dspam libdspam7-drv-pgsql opendkim</code>
+a následně také nainstalujte Dovecot, ovšem z backports:
+<code>&#x000A;apt-get -t wheezy-backports install dovecot dovecot-dev dovecot-antispam dovecot-lmtpd dovecot-pgsql</code></p>
+Protože správce balíčků Apt automaticky instaluje závislé balíčky, měly by nyní být všechny komponenty připraveny pro konfiguraci.
+<h3 id='psql'>Databázové schéma</h3>
+<p>Databáze má 3 tabulky, kam se ukládají data o virtuálních doménách, uživatelích a přesměrování. Kromě správného nastavení přístupu k databázi (soubor pg_hba.conf), se konfigurace vzdálené databáze nijak neliší od konfigurace lokálně nainstalované databáze. Dokonce vlastně ani není co nastavovat, stačí vytvořit databázi pomocí <a href="LINK">tohoto SQL skriptu</a>. Jen nahraďte &quot;xxx&quot; za jméno databázového uživatele, který bude vlastnit databázi a k tomu vytvořte databázové uživatele &quot;postfix&quot; a &quot;dovecot&quot;, kteří budou mít omezená přístupová práva k databázi tak, jak definuje uvedený SQL skript.</p>
+<h3 id='postfix'>Nastavení programu Postfix</h3>
+<p>Tady už to začíná být zajímavější. Postfix v systému slouží jako <a href="LINK">MTA</a>, takže přijímá a odesílá poštu tj. implementuje SMTP protokol. Postfix je tvořen z několika malých programů, které jsou řízeny programem <em>master</em>. Minimálně je potřeba nastavit program <em>master</em> (soubor <em>/etc/postfix/master.cf</em>) a pak způsob, jakým se budou e-maily přijímat a odesílat (soubor <em>/etc/postfix/main.cf</em>). Protože používáme databázi, musí se nakonfigurovat i přístupy k databázi.</p>
+<p>Zde jsou hotové <a href="LINK">main.cf</a> a <a href="LINK">master.cf</a>. Nutno zmínit, že autentizace uživatele pro odeslání e-mailu se provádí pomocí Dovecot a že server vynucuje zabezpečené připojení, takže je potřeba vygenerovat certifikáty (viz dále v textu). Postfix při příjmu bude kontrolovat některé DNS záznamy domény a v případě potřeby lze nastavit, že bude kontrolovat, jestli se odesílatel nenachází na veřejně přístupných blacklistech.</p>
+<p>Nastavení přístupu k informacích uloženým v databázi je celkem přímočaré - jedná se o sadu souborů, kde jsou vždy přístupové údaje k databázi a dotaz, který se má vykonat. Jedná se o soubory <a href="LINK"></a>, <a href="LINK"></a>, <a href="LINK"></a>, <a href="LINK"></a> a <a href="LINK"></a>, kde stačí změnit přístupové údaje a vše by mělo fungovat.</p>
+<h3 id='dovecot'>Nastavení programu Dovecot</h3>
+<p>Dovecot má v systému dvě důležité funkce. Jednak se stará o doručování a vybírání e-mailových zpráv, tedy vykonává roli LDA a implementuje protokoly POP3 a IMAP, a jednak se pro ostatní služby stará o autentizaci uživatele, např. při odesílání zpráv pomocí protokolu SMTP (pokud tedy nechcete, aby zprávy přes server mohl posílat kdokoliv).</p>
+<p>Co se týče LDA jsou v <a href="LINK">konfiguračním souboru <em>dovecot.conf</em></a> definovány výchozí složky uživatelovy schránky, povolené protokoly pro výběr pošty včetně TCP portů a systémový uživatel, který má přístupová práva ke schránkám virtuálních uživatelů. Dovecot prakticky využívá několik systémových uživatelů, především uživatele dovecot a vmail. Při instalaci balíčku na Debianu je uživatel dovecot vytvořen automaticky, ale uživatel vmail ne, takže je nutno ho vytvořit. V tutoriálech se tomuto uživateli často přiřazuje UID 5000, takže tak činím i zde.
+<code>&#x000A;groupadd -g 5000 vmail&#x000A;useradd -g vmail -u 5000 vmail -d /var/vmail&#x000A;mkdir /var/vmail&#x000A;chown vmail:vmail /var/vmail</code></p>
+<p>Autentizace se provádí na základě SQL dotazu &#39;password<em>query&#39;, který je umístěn v souboru <a href="LINK"><em>dovecot-sql.conf.ext</em></a>, kde je také definováno schéma pro uložení hesla. Dovecot podporuje několik schémat; já jsem vybral SHA512-CRYPT, protože pak není náročné implementovat ukládání uživatelů v takřka jakémkoliv jazyce (viz program *Rmails</em>mini* dále).</p>
+<p>Za zmínku ještě stojí nastavení některých pluginů v souboru <a href="LINK">souboru <em>dovecot.conf</em></a>. Plugin <em>quota</em> zde má nastaveny výchozí limity velikostí schránek, které ale jdou individuálně přepsat pomocí hodnot v databázové tabulce <em>boxes</em>. V kombinaci s DSPAMem je užitečný plugin <em>antispam</em>, jenž automaticky učí DSPAM rozpoznávat spam jednoduchým přesunem zpráv do složky Spam.</p>
+<h3 id='dspam'>Nastavení antispam filtru DSPAM</h3>
+<p>Zatím jedinou zbraní proti spamu v systému je program <a href="http://dspam.nuclearelephant.com/">DSPAM</a>. Jedná se o adaptivní filtr, což znamená, že rozpoznávat spam jej uživatel musí naučit a dále trénovat, avšak program by měl být velmi rychlý a zároveň velmi přesný.</p>
+
+<p>Pro ukládání dat je doporučena databáze PostgreSQL, což se hodí do konceptu systému. Nejsnadnější nastavení je vytvořit uživatele <em>dspam</em> s přístupem k databázi <em>dspam</em> a importovat tabulky pomocí SQL skriptů, které jsou na Debianu uloženy v <em>/usr/share/doc/libdspam7-drv-pgsql/sql/</em>.
+<code>&#x000A;psql -U dspam -d dspam &amp;gt; /usr/share/doc/libdspam7-drv-pgsql/sql/*.sql</code>
+Přístupové údaje k databázi pro DSPAM jsou v souboru <a href="LINK">pgsql.conf</a>.</p>
+<p>DSPAM v systému běží jako démon, který je vyvoláván především programem Postfix - při každém příchozím e-mailu. Po kontrole je e-mail zaslán zpět Postfixu. Původně jsem zamýšlel e-maily po kontrole rovnou předávat k doručení programu Dovecot, ale to se mi nepodařilo rozchodit. Současné nastavení využívá rozšíření Postfixu pro regulární výrazy <a href="http://www.postfix.org/PCRE_README.html">PCRE</a>. Regulární výraz je v uložen v souboru <em>/etc/postfix/dspam<em>filter</em>access</em>.</p>
+<h3 id='ssl'>Generování kryptografických klíčů</h3>
+<h3 id='telnet'>Testování protokolů SMTP a IMAP telnetem</h3>
+<h3 id='dkimspf'>Nastavení DKIM a SPF</h3>
+<h3 id='hardening'>Zabezpečení systému</h3>
+<h2>Závěr</h2>
+<fieldset>
+<legend>Navazující článek</legend>
+<h6>Roundcube webmail hosting zdarma na službě OpenShift</h6>
+<em>V přípravě</em>
+<p>Pomocí tohoto návodu budete moci provozovat vlastního webmail klienta, oblíbený program Roundcube, zdarma včetně databáze na cloudové službě OpenShift.</p>
+</fieldset>
+
+<footer></footer>
+</article>
+</div>
+</section>
+<aside class='large-3 columns' id='sidebar-right'>
+<div class='inn'>
+<article id='aban'>
+<a href="http://eshop.meriglobe.cz/produkty/cd-ebook-audiokniha/e-book?a_box=kzyg996h&a_cam=1"><img src="http://affiliate.meriglobe.cz/data/kampan/1/mg-banner-2ebook-300x600.jpg" width="300" height="600" alt="mg-banner-2ebook-300x600.jpg" /></a>
+</article>
+
+
+</div>
+</aside>
+</section>
+<footer class='row' id='footer'>
+<section class='tac large-2 columns'>
+<h4>
+<small>Analytika webu</small>
+</h4>
+<a href="http://www.toplist.cz/"><img src="http://toplist.cz/count.asp?id=1626242&logo=bc" border="0" alt="TOPlist" width="88" height="120" /></a>
+</section>
+<section class='tac large-4 columns'></section>
+<section class='tac large-3 columns'>
+<br>
+Licence:
+<img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" />
+<br>
+<a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
+<br>
+<pre>pull request
+pro článek sem</pre>
+</section>
+<section class='large-3 columns'>
+<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
+</section>
+</footer>
+
+</div>
+</body>
+</html>
+
