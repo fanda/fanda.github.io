@@ -63,9 +63,8 @@
 <a href="/odkazy/">Odkazy</a>
 <ul class='dropdown'>
 <li><a href="http://vystavuj.cz">Vystavuj</a></li>
-<li><a href="http://lovcisnu.cz">Lovci snů</a></li>
-<li><a title="Kryptoměny, Bitcoin, diskuze" href="http://satoshi.nakamoto.cz">Satoshi Nakamoto</a></li>
-<li><a href="http://www.techsquat.com/">Techsquat</a></li>
+<li><a title="Jukebox z Youtube videí" href="http://zvuki.cz">Zvuk♩</a></li>
+<li><a href="http://tricka.trikoko.cz">Všechna trička</a></li>
 </ul>
 </li>
 <li class='divider'></li>
@@ -424,6 +423,37 @@ Jako tomu bývá například v Británii, tento týden počala neděle. Zrovna j
 </section>
 <aside class='large-3 columns' id='sidebar-right'>
 <div class='inn'>
+<h1 class='teead'>
+<a href='http://tricka.trikoko.cz/' title='Největší databáze prodejných triček'>
+Největší
+<br>
+výběr
+<br>
+triček
+</a>
+</h1>
+<ul id='tees'></ul>
+<script src="https://raw.githubusercontent.com/BorisMoore/jsrender/master/jsrender.min.js"></script>
+<script id="tshirt" type="text/x-jsrender">
+  <li class="item">
+    <a href="http://tricka.trikoko.cz/t/{{>id}}" title="{{>name}}" target="_blank">
+      <img width="240" height="310" src="{{>imgurl}}" alt="{{>name}}" />
+      <i class="">{{>label}}</i>
+      <b class="price success label">{{>price}} Kč</b>
+      <p style="display:none">{{>about}}</p>
+    </a>
+  </li>
+</script>
+<script>
+  $.ajax({
+       type: "GET",
+       url: 'http://tricka.trikoko.cz/sample?take=10',
+       dataType: 'json',
+       success: function(data) {
+              $('#tees').html( $('#tshirt').render(data) );
+       }
+  });
+</script>
 <div id='microblog'>
 <article>
 <h3>
@@ -477,7 +507,7 @@ Redesign stránek
 <section class='tac large-3 columns'>
 <br>
 Licence:
-<img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" />
+<a target="_blank" href="http://creativecommons.org/licenses/by/3.0/cz/"><img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" /></a>
 <br>
 <a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
 <br>
