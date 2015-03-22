@@ -389,6 +389,10 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>http://ifanda.cz/it/linux/2015-03-22-presmerovani-ipv4-a-ipv6</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
     <loc>http://ifanda.cz/it/linux/2009-09-26-presun-mysql-databaze-primo-pomoci-souboru-na-disku</loc>
     <priority>1.0</priority>
   </url>
@@ -878,6 +882,10 @@
   </url>
   <url>
     <loc>http://ifanda.cz/ostatni/2011-04-30-lilith-hebrejska-baj</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>http://ifanda.cz/ostatni/2015-03-04-10000-japonskych-textovych-emoticonu-kaomoji</loc>
     <priority>1.0</priority>
   </url>
   <url>

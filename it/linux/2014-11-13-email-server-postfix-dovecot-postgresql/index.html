@@ -103,12 +103,12 @@ Po několika letech jsem byl znovu vystaven útrapám s nastavováním e-mailov�
 <h2>Úvod</h2>
 <p>V minulosti jsem se pokusil celý <a href="http://github.com/fanda/rmails">instalační proces</a> automatizovat, ale výsledná aplikace se nedá považovat za úspěch. Jedná se o Ruby on Rails aplikaci, která pomocí knihovny pro manipulaci s operačním systémem, spravuje nastavení, uživatele a přesměrování e-mailového serveru. Aplikace by teoreticky měla fungovat na většině linuxových distribucí, ale ty se často mění, takže vyladit a udržovat funkční instalační rutiny zabírá hodně času. Rozhodl jsem se vývoj na projektu zastavit a vyjma architektury serveru jsem jej při práci nepoužil.</p>
 <p>
-Avšak i architekturu jsem malinko změnil. Původní je popsána [zde](http://programator.pro/pages/rmails/#cooperation). Ta nová vypadá zhruba takto:
-<pre>--smtp--> [ Postfix ] --smtp--> [DSPAM] --smtp--> [ Postfix ] --lda--> [DOVECOT] ---> (virtual Mailbox)
-       |
+Avšak i architekturu jsem malinko změnil. Původní je popsána v mé diplomové práci s názvem <a href="http://programator.pro/pages/rmails/#cooperation">Řešení e-mailového serveru a aplikace pro jeho správu</a>. Nová architektura by se nákresem dala vyjádřit asi takto:
+<pre>-smtp--> [Postfix] -smtp--> [DSPAM] -smtp--> [Postfix] -lda--> [DOVECOT](Mailbox)
+      |
      DKIM</pre>
-Rozdíl spočívá v odstranění Amawis a Spamassasin; zůstává jen Dspam, který reinjektuje Postfix, a také se změnilo databázové schéma, jelikož server má být součástí většího systému, kde by mělo fungovat jediné přihlášení napříč všemy systémy, což popíšu dále v textu.
 </p>
+<p>Jedná se tedy o mnohem jednodušší architekturu. Rozdíl spočívá v odstranění Amawis a Spamassasin; zůstává jen Dspam, který reinjektuje Postfix. Změnilo se také databázové schéma, jelikož server má být součástí většího systému, kde by mělo fungovat jediné přihlášení napříč všemy systémy, což popíšu dále v textu.</p>
 <h2>Postup nastavení e-mailového serveru</h2>
 Je zřejmé, že server se skládá z několika komponent, které je potřeba nainstalovat a nastavit v operačním systému. Já jsem jako OS použil Debian Wheezy, ale obecně lze postup a především konfigurační soubory použít pro jakýkoliv Linux/Unix. Postupoval byl následovný:
 <ul>
@@ -125,16 +125,21 @@ Je zřejmé, že server se skládá z několika komponent, které je potřeba na
 Nebudu zde popisovat, jak jsem k jednotlivým konfiguracím dospěl, jen vystavím konfigurační soubory komponent a zmíním důležité věci. Informací ohledně e-mailových serverů je na Internetu dostatek, hlavně v angličtině. Nepovažuju konfiguraci za dokonalou, ale každopádně funguje a pro zajištění funkční pošty pro několik virtuálních domén docela stačí.
 <h3 id='apt'>Instalace programů na Debian</h3>
 Debian je jedna z nejrozšířenějších linových distribucí na serverech a v repozitářích má velké množství balíčků, které ovšem ve stabilním vydání nemusí být nejaktuálnější. Naštěstí všechny programy, které e-mailový server podle návrhu vyžaduje jsou v repozitářích přítomny, přestože některé (Dovecot > 2.0) v jsou jen v tzv. backports repozitářích.
-<p><a href="http://backports.debian.org/Instructions/">Přidání backports repozitářů</a> na Debian Wheezy je jednoduché:
-1. přidáme do <em>/etc/apt/sources.list</em> řádek
-<code>&#x000A;deb http://http.debian.net/debian wheezy-backports main</code>
-2. spustíme jako root příkaz: <em>apt-get update</em>.</p>
+<p><a href="http://backports.debian.org/Instructions/">Přidání backports repozitářů</a> na Debian Wheezy je jednoduché:<br/></p>
+<pre class="highlight shell"><span class="nb">echo</span> <span class="s2">&quot;deb http://http.debian.net/debian wheezy-backports main&quot;</span> &gt;&gt; /etc/apt/sources.list
+apt-get update
+</pre>
 <p>Zde ještě poznámka ohledně databáze. Pokud chcete, aby Postgre databáze byla na stejném stroji jako zbytek systému, doporučuju Vám nainstalovat nejnovější verzi, která ovšem není obsažena v repozitářích Debianu a opět musíte upravit <em>/etc/apt/sources.list</em>, abyste ji mohli nainstalovat (<a href="https://wiki.postgresql.org/wiki/Apt">podrobnosti v angličtině</a>). Já reálně používám dedikovaný databázový server, takže jsem instaloval jen PostgreSQL klienta.</p>
-<p>Nyní lze instalovat programy. Pro instalaci Postfix, Dspam a OpenDKIM jako superuživatel spusťte:
-<code>&#x000A;apt-get install build-essential postfix postfix-pgsql postfix-pcre dspam libdspam7-drv-pgsql opendkim</code>
+<p>Nyní lze instalovat programy. Pro instalaci Postfix, Dspam a OpenDKIM jako superuživatel spusťte:</p>
+<pre class="highlight shell">apt-get install build-essential postfix postfix-pgsql postfix-pcre
+apt-get install dspam libdspam7-drv-pgsql opendkim
 a následně také nainstalujte Dovecot, ovšem z backports:
-<code>&#x000A;apt-get -t wheezy-backports install dovecot dovecot-dev dovecot-antispam dovecot-lmtpd dovecot-pgsql</code></p>
+</pre>
+<pre class="highlight shell">apt-get -t wheezy-backports install dovecot dovecot-dev dovecot-antispam dovecot-lmtpd dovecot-pgsql
+</pre>
+<p>
 Protože správce balíčků Apt automaticky instaluje závislé balíčky, měly by nyní být všechny komponenty připraveny pro konfiguraci.
+</p>
 <h3 id='psql'>Databázové schéma</h3>
 <p>Databáze má 3 tabulky, kam se ukládají data o virtuálních doménách, uživatelích a přesměrování. Kromě správného nastavení přístupu k databázi (soubor pg_hba.conf), se konfigurace vzdálené databáze nijak neliší od konfigurace lokálně nainstalované databáze. Dokonce vlastně ani není co nastavovat, stačí vytvořit databázi pomocí <a href="LINK">tohoto SQL skriptu</a>. Jen nahraďte &quot;xxx&quot; za jméno databázového uživatele, který bude vlastnit databázi a k tomu vytvořte databázové uživatele &quot;postfix&quot; a &quot;dovecot&quot;, kteří budou mít omezená přístupová práva k databázi tak, jak definuje uvedený SQL skript.</p>
 <h3 id='postfix'>Nastavení programu Postfix</h3>
@@ -221,14 +226,13 @@ triček
 Licence:
 <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/cz/"><img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" /></a>
 <br>
-<a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
 <br>
-<pre>pull request
-pro článek sem</pre>
-</section>
-<section class='large-3 columns'>
 <a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
+<br>
+<br>
+<a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
 </section>
+<section class='large-3 columns'></section>
 </footer>
 
 </div>

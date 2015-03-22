@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<title>Přesměrování mezi protokoly IPv4 a IPv6</title>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
+<script>
+  window.jQuery || document.write('<script src="/a/js/l/jquery.js">\x3C/script>')
+</script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js' type='text/javascript'></script>
+<script>
+  window.Modernizr || document.write('<script src="/a/js/l/modernizr.js">\x3C/script>')
+</script>
+<script src="/a/script/l/fastclick.js" type="text/javascript"></script>
+<script src="/a/script/l/modernizr.js" type="text/javascript"></script>
+<script src="/a/script/l/jquery.cookie.js" type="text/javascript"></script>
+<script src="/a/script/l/placeholder.js" type="text/javascript"></script>
+<script src="/a/script/l/fastclick.js" type="text/javascript"></script>
+<script src="/a/script/l/foundation.custom.js" type="text/javascript"></script>
+<script src="/a/script/script.js" type="text/javascript"></script>
+<link href="/a/cs/app.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+
+<body class='it it_linux it_linux_2015-03-22-presmerovani-ipv4-a-ipv6 it_linux_2015-03-22-presmerovani-ipv4-a-ipv6_index one-sidebar-right'>
+<div id='container'>
+<header id='header'>
+<div id='sitename'>
+<h1 class='wrapper'>
+<a href='/'>Fanda Internetu</a>
+</h1>
+</div>
+<div id='topmenu'>
+<nav class='wrapper top-bar' data-options='is_hover: true, mobile_show_parent_link: true' data-topbar>
+<section class='top-bar-section'>
+<ul class='title-area'>
+<li class='name'></li>
+</ul>
+<ul>
+<li><a href="/audio/">Audio</a></li>
+<li class='divider'></li>
+<li><a href="/internet/">Internet</a></li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/it/">IT</a>
+<ul class='dropdown'>
+<li><a href="/it/cpp">C++</a></li>
+<li><a href="/it/drupal">Drupal</a></li>
+<li><a href="/it/iphone">iPhone</a></li>
+<li><a href="/it/linux">Linux</a></li>
+<li><a href="/it/perl">Perl</a></li>
+<li><a href="/it/python">Python</a></li>
+<li><a href="/it/ruby">Ruby</a></li>
+<li><a href="/it/ostatní">Ostatní</a></li>
+</ul>
+</li>
+<li class='divider'></li>
+<li><a href="/knihy">Knihy</a></li>
+<li class='divider'></li>
+<li><a href="/matematika/">Matematika</a></li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/odkazy/">Odkazy</a>
+<ul class='dropdown'>
+<li><a href="http://vystavuj.cz">Vystavuj</a></li>
+<li><a title="Jukebox z Youtube videí" href="http://zvuki.cz">Zvuk♩</a></li>
+<li><a href="http://tricka.trikoko.cz">Všechna trička</a></li>
+</ul>
+</li>
+<li class='divider'></li>
+<li>
+<a href="/ostatní/">Ostatní</a>
+</li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/seberozvoj/">Seberozvoj</a>
+<ul class='dropdown'>
+<li><a href="/seberozvoj/joga">Jóga</a></li>
+</ul>
+</li>
+<li class='divider'></li>
+<li><a href="/video/">Video</a></li>
+</ul>
+</section>
+</nav>
+</div>
+</header>
+
+<section class='container row' id='center'>
+<section class='large-9 columns' id='content'>
+<div class='inn'><article style='display: block'>
+<header>
+<h1>
+<small>
+<time>22.  3. 2015</time>
+</small>
+Přesměrování mezi protokoly IPv4 a IPv6
+</h1>
+
+</header>
+Ještě v roce 2015 není všude samozřejmostí podpora protokolu IPv6, respektive jeho podpora je poměrně malá, ale na druhou stranu, adres IPv4 je čím dál míň, takže už často nejsou zdarma k VPS tak, jak to bývalo před několika lety. Například WEDOS zpoplatnil přiřazení IPv4 adresy k VPS na 50Kč měsíčně nebo u <a href="http://4smart.eu">4smart</a> je to 40Kč měsíčně. Ve výsledku se tedy vyplatí používat IPv6 adresy a přesměrovávat na ně přístupy z IPv4 adres pomocí proxy serverů, případně přístupovat na zařízení, která podporují jen protokol IPv6 ze sítí, které ho ještě nezavedly (například místí poskytovatel WiFi).
+
+<h2>Přístup k IPv6 zařízení, které nemá IPv4 adresu</h2>
+Tento problém bude v budoucnu řešit čím dál víc lidí. Příklad z praxe: máte samostatný DB server na VPS a vedle něj u stejného poskytovatele další VPS servery, které se na něj připojují. V tomto případě používáte lokální IPv4 adresy (192.168.*.*), ale protože to Váš poskytovatel umožňuje, má server i veřejnou IPv6 adresu, díky níž se k DB serveru můžete připojit přímo ze svého počítače. Zároveň občas využíváte služby pro cloudový hosting aplikací s automatickým nasazování přes Git, např. <a href="http://heroku.com">Heroku</a> nebo <a href="https://www.openshift.com/">OpenShift</a>, které sice nabízejí nějaké DB, ale ty buď nevyhovují vašim požadavkům, nebo jsou moc drahé. Rozhodnete se cloudovou aplikaci připojit k DB serveru, ale zjistíte, že pro připojení musíte použít IPv4 adresu.
+Samozřejmě si jako řešení můžete pronajmout IPv4 adresu za 40-50Kč měsíčně, ale to už rovnou můžete platit za databázový server u svého cloudového hostingu. Přitom pokud už nějaký server (třeba aplikační) s veřejnou IPv4 adresou už máte, nemusíte platit za nic. Všechno, co musíte udělat, je spuštění programu <b>socat</b>, který by měl být běžně na všech serverových distribucích Linuxu i Unixu. Otevřete tím nový port, který bude všechna svá připojení přeposílat na IPv6 zařízení a to efektivně bez žádného velkého vytížení.
+<pre class="highlight shell">socat TCP4-LISTEN:3306,fork,su<span class="o">=</span>nobody TCP6:[2a01:188:75d:1::2]:3306
+</pre>
+Ve výše uvedeném příkazu upravte podle vlastní potřeby IPv6 adresu a porty. Pokud chcete, aby se příkaz spustil automaticky po startu serveru, jednoduše jej přidejte do /etc/rc.local (na Debianu) nebo pro něj <a href="http://upstart.ubuntu.com/getting-started.html">vytvořte Upstart init skript</a>.
+<h2>Přístup k IPv6 zařízení ze sítě bez IPv6 podpory</h2>
+Pokud váš poskytovatel internetového připojení nepodporuje IPv6 protokol a vy doma nebo v kanceláři nemáte IPv6 adresu a potřebujete se odtamtud připojit k IPv6 zařízení, které naopak nemá IPv4 adresu, můžete se připojit přes nějakého IPv6 tunel brokera vytvořením IPv6 tunelu.
+K tomu nejdříve potřebujete toho IPv6 tunel brokera. Na internetu jsou brokeři, které do určitého počtu adres, své služby poskytují zdarma. Pro výše uvedený příklad bohatě stačí jeden tunel, jímž vás plně uspokojí <a href="https://www.tunnelbroker.net/">Hurricane Electric Free IPv6 Tunnel Broker</a>. U této služby po registraci získáte možnost vytvořit zdarma až tři propojení mezi IPv4 a IPv6 adresami. V jejich systému zadáte IPv4 adresu, ze které se chcete připojovat a oni k ni přiřadí IPv6 adresu, která vás spojí se sítí IPv6 protokolu.
+Poté na svém počítači vytvoříte nové síťové rozhraní, díky němuž se můžete přímo připojovat ke všem veřejným IPv6 adresám. Z následujících příkazů si vytvořte jednoduchý <em>sh</em> skript, který spusťe při startu operačního systému, nebo jako root v případě potřeby.
+<pre class="highlight shell">ifconfig sit0 up
+ifconfig sit0 inet6 tunnel ::215.65.87.14
+ifconfig sit1 up
+ifconfig sit1 inet6 add 2004:481:1e1b:8f::4/64
+route -A inet6 add ::/0 dev sit1
+</pre>
+Výše uvedená řešení jsou levná a efektivní propojení adresních prostorů IPv4 a IPv6, která jsou bez instalace dodatečných programů dostupná na každé linuxové/unixové distribuci.
+
+<footer></footer>
+</article>
+</div>
+</section>
+<aside class='large-3 columns' id='sidebar-right'>
+<div class='inn'>
+<h1 class='teead'>
+<a href='http://tricka.trikoko.cz/' title='Největší databáze prodejných triček'>
+Největší
+<br>
+výběr
+<br>
+triček
+</a>
+</h1>
+<ul id='tees'></ul>
+<script src="https://raw.githubusercontent.com/BorisMoore/jsrender/master/jsrender.min.js"></script>
+<script id="tshirt" type="text/x-jsrender">
+  <li class="item">
+    <a href="http://tricka.trikoko.cz/t/{{>id}}" title="{{>name}}" target="_blank">
+      <img width="240" height="310" src="{{>imgurl}}" alt="{{>name}}" />
+      <i class="">{{>label}}</i>
+      <b class="price success label">{{>price}} Kč</b>
+      <p style="display:none">{{>about}}</p>
+    </a>
+  </li>
+</script>
+<script>
+  $.ajax({
+       type: "GET",
+       url: 'http://tricka.trikoko.cz/sample?take=3',
+       dataType: 'json',
+       success: function(data) {
+              $('#tees').html( $('#tshirt').render(data) );
+       }
+  });
+</script>
+
+
+</div>
+</aside>
+</section>
+<footer class='row' id='footer'>
+<section class='tac large-2 columns'>
+<h4>
+<small>Analytika webu</small>
+</h4>
+<a href="http://www.toplist.cz/"><img src="http://toplist.cz/count.asp?id=1626242&logo=bc" border="0" alt="TOPlist" width="88" height="120" /></a>
+</section>
+<section class='tac large-4 columns'></section>
+<section class='tac large-3 columns'>
+<br>
+Licence:
+<a target="_blank" href="http://creativecommons.org/licenses/by/3.0/cz/"><img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" /></a>
+<br>
+<br>
+<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
+<br>
+<br>
+<a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
+</section>
+<section class='large-3 columns'></section>
+</footer>
+
+</div>
+</body>
+</html>
+

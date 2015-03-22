@@ -4578,209 +4578,226 @@ pre.highlight div .gd, pre.highlight div .gd .x, pre.highlight div .gi, pre.high
     color: #008cba;
     font-size: 2.9rem; }
 
-/* line 40, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+/* line 39, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+.highlight {
+  background: #f9f9f9;
+  padding: 1px;
+  margin: 4px 2px; }
 
-/* line 43, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 45, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+body {
+  line-height: 1.5em; }
+
+/* line 49, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 a, .color-red, #sitename a:hover {
   color: #fd3838; }
 
-/* line 46, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 52, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #container {
   width: 100%; }
 
-/* line 51, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 57, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #center .content .inn {
   padding: 11px; }
 
-/* line 54, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 60, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #content {
   min-height: 400px; }
 
-/* line 57, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 63, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #sidebar-right {
   min-height: 400px;
   float: right;
   /*border: blue 1px solid */ }
 
-/* line 62, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 68, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #footer {
   border-top: 2px solid #fd3838;
   margin: 2em auto 2em;
   padding-top: 1em;
   padding-bottom: 1em; }
 
-/* line 68, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 74, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #topmenu {
   border-top: 2px solid #fd3838;
   background: #fd3838; }
-  /* line 71, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 77, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   #topmenu * {
     background: #fd3838; }
-  /* line 74, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 80, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   #topmenu nav li {
     text-align: left; }
-    /* line 76, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    /* line 82, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
     #topmenu nav li a {
       padding-left: 30px;
       padding-right: 30px;
       font-size: 16px; }
-    /* line 80, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    /* line 86, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
     #topmenu nav li ul li {
       text-align: left; }
-  /* line 83, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 89, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   #topmenu .top-bar-section .divider {
     border: #fd3838; }
 
-/* line 86, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 92, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #sitename {
   background: #222222; }
-  /* line 88, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 94, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   #sitename h1 {
     font-size: 26px;
     padding: 6px 0; }
-  /* line 91, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 97, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   #sitename a {
     color: #fdfdfd; }
 
-/* line 94, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 100, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #header {
   margin-bottom: 3em; }
 
-/* line 96, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 102, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 h1 {
   font-size: 2rem; }
 
-/* line 99, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 105, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 article {
   margin-bottom: 1.5em;
   clear: both; }
-  /* line 102, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 108, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   article header {
     margin-bottom: 0.5em; }
-    /* line 104, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    /* line 110, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
     article header time {
       font-size: 100%;
       font-variant: italic;
       display: inline-block;
       min-width: 12ex; }
-    /* line 109, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    /* line 115, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
     article header a {
       color: #fd3838;
       text-decoration: none; }
-      /* line 112, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+      /* line 118, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
       article header a:hover {
         text-decoration: underline; }
-  /* line 114, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 120, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   article h2 {
-    font-size: 1.74rem; }
-  /* line 116, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    font-size: 1.66rem;
+    margin-top: 1.66rem; }
+  /* line 123, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   article h3 {
+    margin-top: 1.38rem;
     font-size: 1.38rem; }
-  /* line 118, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 126, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   article h4 {
     font-size: 1.29em; }
-  /* line 120, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 128, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   article h5 {
     font-size: 1.11rem; }
-  /* line 122, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 130, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   article p {
     margin-bottom: 0.5em;
     text-align: justify; }
-    /* line 125, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    /* line 133, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
     article p a {
       color: #fd3838;
       text-decoration: underline; }
-      /* line 128, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+      /* line 136, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
       article p a:hover {
         text-decoration: none; }
-  /* line 130, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 138, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   article footer {
     clear: both; }
+  /* line 140, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  article blockquote {
+    background: #fd3838;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.6rem;
+    margin: 0.5rem; }
 
-/* line 135, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 151, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 article.inlist header h2 {
   font-size: 30px; }
-/* line 137, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 153, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 article.inlist .summary {
   max-height: 392px;
-  overflow-y: auto; }
+  overflow-y: auto;
+  margin-bottom: 1rem; }
 
-/* line 141, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 158, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 .list-articles {
   list-style: none; }
-  /* line 143, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 160, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   .list-articles time {
     display: inline-block;
     min-width: 12ex; }
-  /* line 146, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 163, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   .list-articles h1 {
     font-size: 30px; }
 
-/* line 150, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 167, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 .book-navigation .page-links, .paginate {
   width: 100%;
   padding: 0;
   margin-top: 0em; }
-  /* line 154, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 171, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   .book-navigation .page-links a, .book-navigation .page-links div, .paginate a, .paginate div {
     display: inline-block;
     text-align: center;
     text-decoration: none; }
-  /* line 158, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 175, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   .book-navigation .page-links .page-previous, .book-navigation .page-links .page-next, .paginate .page-previous, .paginate .page-next {
     width: 32%; }
-  /* line 160, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 177, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   .book-navigation .page-links .page-up, .book-navigation .page-links .page-number, .paginate .page-up, .paginate .page-number {
     width: 32%; }
 
-/* line 164, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 181, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 ul.links li a {
   display: block; }
 
-/* line 168, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 185, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 ul#webz li {
   display: inline-block;
   list-style: none; }
-  /* line 171, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 188, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   ul#webz li a {
     padding: 7px; }
 
-/* line 175, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 192, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #microblog h3 {
   font-size: 16px;
   margin: 0; }
-/* line 178, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 195, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #microblog p {
   font-size: 14px;
   color: #656565;
   margin: 0 0 1ex 0; }
-/* line 182, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 199, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #microblog time {
   font-size: 12px; }
 
-/* line 185, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+/* line 202, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
 #tees {
   list-style: none; }
-  /* line 187, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 204, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   #tees .item {
     margin: 0;
     padding: 0;
     list-style: none; }
-  /* line 191, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 208, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   #tees .item a {
     position: relative;
     width: 240px;
     height: 310px;
     display: block; }
-  /* line 196, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 213, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   #tees .item a b {
     position: absolute;
     bottom: 0;
     right: 0;
     font-size: 224%; }
-  /* line 201, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  /* line 218, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
   #tees .item a i {
     position: absolute;
     bottom: 0;
@@ -4789,3 +4806,55 @@ ul#webz li {
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     color: white;
     line-height: 110%; }
+
+/* line 227, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+#kaomojis {
+  text-align: center; }
+  /* line 229, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  #kaomojis a {
+    display: inline-block;
+    font-size: 121%;
+    padding: 19px;
+    text-align: center; }
+    /* line 234, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    #kaomojis a:hover {
+      border: 1px solid #fd3838;
+      padding: 18px;
+      color: #fd3838; }
+    /* line 238, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    #kaomojis a.active {
+      color: #fd3838;
+      border-color: #fd3838; }
+    /* line 241, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    #kaomojis a.thing {
+      color: indigo;
+      border-color: indigo; }
+    /* line 244, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    #kaomojis a.mood {
+      color: goldenrod;
+      border-color: goldenrod; }
+    /* line 247, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    #kaomojis a.animal {
+      color: forestgreen;
+      border-color: forestgreen; }
+    /* line 250, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    #kaomojis a.action {
+      color: darkturquoise;
+      border-color: darkturquoise; }
+    /* line 253, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    #kaomojis a.other {
+      color: #e04613;
+      border-color: #e04613; }
+
+/* line 256, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+.kaomoji {
+  display: none; }
+  /* line 258, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+  .kaomoji table {
+    width: 100%; }
+    /* line 260, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
+    .kaomoji table td {
+      padding: 19px;
+      text-align: center;
+      width: 33%;
+      font-size: 144%; }
