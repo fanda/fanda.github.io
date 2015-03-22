@@ -4707,7 +4707,7 @@ article {
   article footer {
     clear: both; }
   /* line 140, /home/fanda/www/ruby/static/ifanda2/source/a/cs/app.sass */
-  article blockquote {
+  article blockquote, article blockquote * {
     background: #fd3838;
     color: white;
     font-weight: bold;
