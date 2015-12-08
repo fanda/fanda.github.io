@@ -48,7 +48,9 @@
 <li><a href="/it/drupal">Drupal</a></li>
 <li><a href="/it/iphone">iPhone</a></li>
 <li><a href="/it/linux">Linux</a></li>
+<li><a href="/it/nginx">Nginx</a></li>
 <li><a href="/it/perl">Perl</a></li>
+<li><a href="/it/postgresql">PostgreSQL</a></li>
 <li><a href="/it/python">Python</a></li>
 <li><a href="/it/ruby">Ruby</a></li>
 <li><a href="/it/ostatní">Ostatní</a></li>
@@ -89,6 +91,68 @@
 <section class='container row' id='center'>
 <section class='large-9 columns' id='content'>
 <div class='inn'><section>
+<article class='inlist' style='display: block'>
+<header><h2>
+<small>
+<time>20. 10. 2015</time>
+</small>
+<a href="/it/linux/2015-10-20-ansible-tutorial-pro-devops/">Ansible tutorial pro Debian</a>
+</h2>
+</header>
+<section class='summary'>
+<h2>Instalace</h2>
+<p>Požadované programy: python2 (s verzí 3 nejspíše nic nebude fungovat), pypi.</p>
+<pre class="highlight shell">pip install   ansible  configparser  netaddr  debops
+</pre>
+<p>Pro stažení všech <em>playbooks</em> z nabídky DebOps je po instalaci nutné spustit</p>
+<pre class="highlight shell">debops-update
+</pre>
+<h2>Vytvoření projektu</h2>
+</section>
+<footer>
+<span class='label secondary radius'>
+Linux
+</span>
+</footer>
+</article>
+<article class='inlist' style='display: block'>
+<header><h2>
+<small>
+<time> 2.  4. 2015</time>
+</small>
+<a href="/it/postgresql/2015-04-02-testovani-rychlosti-jsonb-gin-indexem/">Testování rychlosti JSONB s GIN indexem</a>
+</h2>
+</header>
+<section class='summary'>
+<p>Open Source systém pro řízení báze dat PostgreSQL od verze 9.4 podporuje datový typ JSONB, který slouží pro ukládání JSON dokumentů v binární formě. Vyzkoušel jsem s tímto novým datovým typem několik dotazů - jednak rychlost importu dat z CSV souboru pomocí COPY a jednak několik méně či více složitých SELECT dotazů se zapnutým GIN indexem.</p>
+
+<p>
+</section>
+<footer>
+<span class='label secondary radius'>
+Postgresql
+</span>
+</footer>
+</article>
+<article class='inlist' style='display: block'>
+<header><h2>
+<small>
+<time>23.  3. 2015</time>
+</small>
+<a href="/it/nginx/2015-03-23-spravne-nastaveni-ssl-nginx/">Správné nastavení SSL v Nginx</a>
+</h2>
+</header>
+<section class='summary'>
+<p>Nginx [engin-x] je vysose výkoný webový server, který podporuje protokol SSL (Secure Sockets Layer) zajišťující šifrovanou komunikaci včetně vzájemné autentizace klienta a serveru. SSL je sice ve výchozí konfiguraci aktivní, ovšem toto nastavení není tak optimální, jak by mohlo být. Zde je návrh, jak konfiguraci SSL v Nginx zlepšit.</p>
+
+<p>
+</section>
+<footer>
+<span class='label secondary radius'>
+Nginx
+</span>
+</footer>
+</article>
 <article class='inlist' style='display: block'>
 <header><h2>
 <small>
@@ -465,60 +529,6 @@ Ruby
 </span>
 </footer>
 </article>
-<article class='inlist' style='display: block'>
-<header><h2>
-<small>
-<time> 8.  3. 2012</time>
-</small>
-<a href="/it/ruby/2012-03-08-konfiguracni-soubor-v-ruby-on-rails/">Konfigurační soubor v Ruby on Rails</a>
-</h2>
-</header>
-<section class='summary'>
-<p>Při programování webových aplikací je často potřeba mít k dispozici hodnoty, které se za běhu aplikace nemění, konfigurační konstanty aplikace. Jak už to tak bývá, dají se v Ruby on Rails konstanty zadávat hned několika způsoby.</p>
-
-<p>Já si vytvářím konfigura...</p>
-</section>
-<footer>
-<span class='label secondary radius'>
-Ruby
-</span>
-</footer>
-</article>
-<article class='inlist' style='display: block'>
-<header><h2>
-<small>
-<time>19.  1. 2012</time>
-</small>
-<a href="/it/ruby/2012-01-19-bezpecne-vypocty-v-novem-vlakne/">Bezpečné výpočty v novém vlákně</a>
-</h2>
-</header>
-<section class='summary'>
-<p>Při tvorbě webové aplikace jsem řešil problém, jak uživateli poskytnout možnost zadat své vlastní matematické vzorce, které by se dále v programu prováděly a to tak, aby jejich běh neohrožoval bezpečnost celé webové aplikace či dokonce aplikačního...</p>
-</section>
-<footer>
-<span class='label secondary radius'>
-Ruby
-</span>
-</footer>
-</article>
-<article class='inlist' style='display: block'>
-<header><h2>
-<small>
-<time> 9.  5. 2011</time>
-</small>
-<a href="/it/cpp/2011-05-09-knihovna-pro-generovani-pseudonahodnych-cisel/">Knihovna pro generování pseudonáhodných čísel</a>
-</h2>
-</header>
-<section class='summary'>
-<p>Při simulacích se často používají náhodné jevy či procesy, neboť některé části modelů jsou neurčité nebo je neumíme popsat jinak. Jedná se například o popisy příchodů (např. zákazníků) v systémech hromadné obsluhy, výskytu poruch nebo katastrof, určení doby obsluhy či doby životnosti nějakého zařízení. Především pro tvorbu simulačních modelů je tedy potřeba nástroj, který v průběhu simulace zajistí požadovanou náhodnost a to pokud možno rychle a přesně. Právě takovým nástrojem je zde dokumentovaná <a href="https://github.com/fanda/Pseudorandom-numbers-generator-library">knihovna pro generování pseudonáhodných čísel</a> nabízející tvůrci simulačního modelu na výběr z několika rozložení pravděpodobnosti výskytu žádané náhody.</p>
-
-</section>
-<footer>
-<span class='label secondary radius'>
-Cpp
-</span>
-</footer>
-</article>
 <div class='paginate out'>
 <div class='page-previous'>
 </div>
@@ -623,12 +633,22 @@ Licence:
 <a target="_blank" href="http://creativecommons.org/licenses/by/3.0/cz/"><img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" /></a>
 <br>
 <br>
-<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/ikona4.jpg"></a>
+<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/webarchiv_certifikat_cb.gif"></a>
 <br>
 <br>
 <a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
 </section>
-<section class='large-3 columns'></section>
+<section class='large-3 columns'>
+<h4>
+<small>Odkazy</small>
+</h4>
+<a href="http://vystavuj.cz">Vystavuj.cz</a>
+<br>
+<a href="http://programator.pro">Programátor na volné noze</a>
+<br>
+<a href="http://blazekfoto.cz">Fotografické služby v Brně</a>
+<br>
+</section>
 </footer>
 
 </div>

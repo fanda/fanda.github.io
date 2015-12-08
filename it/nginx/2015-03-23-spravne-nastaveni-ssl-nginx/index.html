@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<title>Správné nastavení SSL v Nginx</title>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
+<script>
+  window.jQuery || document.write('<script src="/a/js/l/jquery.js">\x3C/script>')
+</script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js' type='text/javascript'></script>
+<script>
+  window.Modernizr || document.write('<script src="/a/js/l/modernizr.js">\x3C/script>')
+</script>
+<script src="/a/script/l/fastclick.js" type="text/javascript"></script>
+<script src="/a/script/l/modernizr.js" type="text/javascript"></script>
+<script src="/a/script/l/jquery.cookie.js" type="text/javascript"></script>
+<script src="/a/script/l/placeholder.js" type="text/javascript"></script>
+<script src="/a/script/l/fastclick.js" type="text/javascript"></script>
+<script src="/a/script/l/foundation.custom.js" type="text/javascript"></script>
+<script src="/a/script/script.js" type="text/javascript"></script>
+<link href="/a/cs/app.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+
+<body class='it it_nginx it_nginx_2015-03-23-spravne-nastaveni-ssl-nginx it_nginx_2015-03-23-spravne-nastaveni-ssl-nginx_index one-sidebar-right'>
+<div id='container'>
+<header id='header'>
+<div id='sitename'>
+<h1 class='wrapper'>
+<a href='/'>Fanda Internetu</a>
+</h1>
+</div>
+<div id='topmenu'>
+<nav class='wrapper top-bar' data-options='is_hover: true, mobile_show_parent_link: true' data-topbar>
+<section class='top-bar-section'>
+<ul class='title-area'>
+<li class='name'></li>
+</ul>
+<ul>
+<li><a href="/audio/">Audio</a></li>
+<li class='divider'></li>
+<li><a href="/internet/">Internet</a></li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/it/">IT</a>
+<ul class='dropdown'>
+<li><a href="/it/cpp">C++</a></li>
+<li><a href="/it/drupal">Drupal</a></li>
+<li><a href="/it/iphone">iPhone</a></li>
+<li><a href="/it/linux">Linux</a></li>
+<li><a href="/it/nginx">Nginx</a></li>
+<li><a href="/it/perl">Perl</a></li>
+<li><a href="/it/postgresql">PostgreSQL</a></li>
+<li><a href="/it/python">Python</a></li>
+<li><a href="/it/ruby">Ruby</a></li>
+<li><a href="/it/ostatní">Ostatní</a></li>
+</ul>
+</li>
+<li class='divider'></li>
+<li><a href="/knihy">Knihy</a></li>
+<li class='divider'></li>
+<li><a href="/matematika/">Matematika</a></li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/odkazy/">Odkazy</a>
+<ul class='dropdown'>
+<li><a href="http://vystavuj.cz">Vystavuj</a></li>
+<li><a title="Jukebox z Youtube videí" href="http://zvuki.cz">Zvuk♩</a></li>
+<li><a href="http://tricka.trikoko.cz">Všechna trička</a></li>
+</ul>
+</li>
+<li class='divider'></li>
+<li>
+<a href="/ostatní/">Ostatní</a>
+</li>
+<li class='divider'></li>
+<li class='has-dropdown'>
+<a href="/seberozvoj/">Seberozvoj</a>
+<ul class='dropdown'>
+<li><a href="/seberozvoj/joga">Jóga</a></li>
+</ul>
+</li>
+<li class='divider'></li>
+<li><a href="/video/">Video</a></li>
+</ul>
+</section>
+</nav>
+</div>
+</header>
+
+<section class='container row' id='center'>
+<section class='large-9 columns' id='content'>
+<div class='inn'><article style='display: block'>
+<header>
+<h1>
+<small>
+<time>23.  3. 2015</time>
+</small>
+Správné nastavení SSL v Nginx
+</h1>
+
+</header>
+<p>Nginx [engin-x] je vysose výkoný webový server, který podporuje protokol SSL (Secure Sockets Layer) zajišťující šifrovanou komunikaci včetně vzájemné autentizace klienta a serveru. SSL je sice ve výchozí konfiguraci aktivní, ovšem toto nastavení není tak optimální, jak by mohlo být. Zde je návrh, jak konfiguraci SSL v Nginx zlepšit.</p>
+
+<p></p>
+
+<p>Nebudu chodit kolem horké kaše. Zde je celá zmíněná konfigurace.</p>
+<pre class="highlight text">http {
+  ssl_prefer_server_ciphers on;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers &quot;EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS&quot;;
+
+  ssl_stapling on;
+  ssl_stapling_verify on;
+  ssl_trusted_certificate /etc/nginx/ssl/stapling_trusted.crt;
+  resolver 8.8.4.4 8.8.8.8 valid=300s;
+  resolver_timeout 10s;
+
+  ssl_session_cache shared:SSL:32m;
+  ssl_buffer_size 8k;
+  ssl_session_timeout 10m;
+}
+</pre>
+<p>Pro účely vysvětlení jsou direktivy uvnitř bloku <em>http</em> rozděleny volnými řádky na tři bloky.
+V prvním bloku se definují povolené verze a zabezpečovací mechanizmy. Za zmínku zde stojí, že není povolené SSL verze 3, které je náchylné k tzv. <a href="http://www.root.cz/clanky/poodle-utok-na-sslv3/">POODLE&nbsp;útoku</a>. Pozor na to, že vypsané povolené a zakázané šifrovací mechanizmy nedají vzniknout spojení s prohlížeči IE6 a IE8 na Windows XP, ale to by dnes měla být naprosto zanedbatelná menšina.</p>
+
+<p>Druhý blok je o něco zajímavější. Aktivuje tzv. <a href="http://en.wikipedia.org/wiki/OCSP_stapling">OCSP&nbsp;stapling</a>, což je mechanizmus pro ověřování správnosti SSL certifikátu, který dovoluje ověřovat certifikát podle podepsané časové známky, čímž snižuje počet dotazů na certifikační autoritu a tím pádem zvyšuje rychlost zabezpečené komunikace. Podle <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_stapling">Nginx dokumentace k ssl_stapling</a> je potřeba specifikovat DNS resolver, který přeloží jméno OCSP responderu. Google dává k dispozici své DNS servery s adresami 8.8.8.8 a 8.8.4.4, ale pokud preferujete vlastního DNS servery, tak resolver jednoduše upravte.</p>
+
+<p>Ve třetím bloku se nastavuje velikost bufferu a především zapíná sdílená <em>SSL session cache</em>, která dává potenciál pamatovat si na 10 minut až 32 x <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_session_cache">4000</a> = 128000 zabezpečených spojení a tím zvýšit jejich rychlost.</p>
+
+<p>Na závěr ještě jeden tip na zvýšení výkonu. Nginx dovoluje aktivovat <a href="http://www.techrepublic.com/article/take-advantage-of-tcp-ip-options-to-optimize-data-transmission/">TCP&nbsp;DEFER&nbsp;ACCEPT</a>, což urychlí navázání TCP spojení mezi klientem a serverem. Jednoduše k direktivě <em>listen</em> napište slovo <strong>deferred</strong>.</p>
+<pre class="highlight text">server {
+  listen 443 deferred ssl;
+}
+</pre>
+<footer></footer>
+</article>
+</div>
+</section>
+<aside class='large-3 columns' id='sidebar-right'>
+<div class='inn'>
+<h1 class='teead'>
+<a href='http://tricka.trikoko.cz/' title='Největší databáze prodejných triček'>
+Největší
+<br>
+výběr
+<br>
+triček
+</a>
+</h1>
+<ul id='tees'></ul>
+<script src="https://raw.githubusercontent.com/BorisMoore/jsrender/master/jsrender.min.js"></script>
+<script id="tshirt" type="text/x-jsrender">
+  <li class="item">
+    <a href="http://tricka.trikoko.cz/t/{{>id}}" title="{{>name}}" target="_blank">
+      <img width="240" height="310" src="{{>imgurl}}" alt="{{>name}}" />
+      <i class="">{{>label}}</i>
+      <b class="price success label">{{>price}} Kč</b>
+      <p style="display:none">{{>about}}</p>
+    </a>
+  </li>
+</script>
+<script>
+  $.ajax({
+       type: "GET",
+       url: 'http://tricka.trikoko.cz/sample?take=3',
+       dataType: 'json',
+       success: function(data) {
+              $('#tees').html( $('#tshirt').render(data) );
+       }
+  });
+</script>
+
+
+</div>
+</aside>
+</section>
+<footer class='row' id='footer'>
+<section class='tac large-2 columns'>
+<h4>
+<small>Analytika webu</small>
+</h4>
+<a href="http://www.toplist.cz/"><img src="http://toplist.cz/count.asp?id=1626242&logo=bc" border="0" alt="TOPlist" width="88" height="120" /></a>
+</section>
+<section class='tac large-4 columns'></section>
+<section class='tac large-3 columns'>
+<br>
+Licence:
+<a target="_blank" href="http://creativecommons.org/licenses/by/3.0/cz/"><img src="http://i.creativecommons.org/l/by/3.0/cz/80x15.png" /></a>
+<br>
+<br>
+<a href="http://www.webarchiv.cz/files/vydavatele/certifikat.html" onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"><img title="STRÁNKY ARCHIVOVÁNY NÁRODNÍ KNIHOVNOU ČR" style="border:none" oncontextmenu="return false" src="http://www.webarchiv.cz/images/webarchiv_certifikat_cb.gif"></a>
+<br>
+<br>
+<a href="https://github.com/fanda/ifanda.cz">Zdrojové kódy stránek</a>
+</section>
+<section class='large-3 columns'>
+<h4>
+<small>Odkazy</small>
+</h4>
+<a href="http://vystavuj.cz">Vystavuj.cz</a>
+<br>
+<a href="http://programator.pro">Programátor na volné noze</a>
+<br>
+<a href="http://blazekfoto.cz">Fotografické služby v Brně</a>
+<br>
+</section>
+</footer>
+
+</div>
+</body>
+</html>
+
